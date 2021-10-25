@@ -9,7 +9,13 @@
         android:id="@+id/splashScreenFragment"
         android:name="abandonedstudio.app.focuser.ui.splashscreen.SplashScreenFragment"
         android:label="SplashScreenFragment"
-        tools:layout="@layout/splash_screen"/>
+        tools:layout="@layout/splash_screen">
+        <action
+            android:id="@+id/action_splashScreenFragment_to_mainDrawerHostFragment"
+            app:destination="@id/mainDrawerHostFragment"
+            app:enterAnim="@anim/from_right"
+            app:exitAnim="@anim/fade_out" />
+    </fragment>
     <fragment
         android:id="@+id/mainDrawerHostFragment"
         android:name="abandonedstudio.app.focuser.ui.maindrawerhost.MainDrawerHostFragment"
