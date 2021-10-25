@@ -1,13 +1,19 @@
 package abandonedstudio.app.focuser.ui.splashscreen
 
+import abandonedstudio.app.focuser.R
 import abandonedstudio.app.focuser.databinding.SplashScreenBinding
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.WindowManager
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
+import androidx.navigation.Navigation
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class SplashScreenFragment : Fragment() {
@@ -27,10 +33,20 @@ class SplashScreenFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        //    set fullscreen
+        requireActivity().window.addFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS)
+
+        lifecycleScope.launch {
+            delay(1500L)
+            Navigation.findNavController(view)
+                .navigate(R.id.action_splashScreenFragment_to_mainDrawerHostFragment)
+        }
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
+        //        clear fullscreen so it won't affect other fragments
+        requireActivity().window.clearFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS)
         _binding = null
     }
 }
