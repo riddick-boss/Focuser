@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
+import android.view.animation.AnimationUtils
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
@@ -36,8 +37,12 @@ class SplashScreenFragment : Fragment() {
         //    set fullscreen
         requireActivity().window.addFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS)
 
+        val fadeInAnim = AnimationUtils.loadAnimation(requireContext(), R.anim.fade_in_1_5sec)
+
+        binding.rocketLottie.animation = fadeInAnim
+
         lifecycleScope.launch {
-            delay(1500L)
+            delay(4500L)
             Navigation.findNavController(view)
                 .navigate(R.id.action_splashScreenFragment_to_mainDrawerHostFragment)
         }
@@ -45,7 +50,7 @@ class SplashScreenFragment : Fragment() {
 
     override fun onDestroyView() {
         super.onDestroyView()
-        //        clear fullscreen so it won't affect other fragments
+//        clear fullscreen so it won't affect other fragments
         requireActivity().window.clearFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS)
         _binding = null
     }

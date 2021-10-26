@@ -2,6 +2,17 @@
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/main_drawer_nav_graph">
+    android:id="@+id/main_drawer_nav_graph"
+    app:startDestination="@id/methodsListFragment">
 
+    <action
+        android:id="@+id/action_global_to_methodsListFragment"
+        app:destination="@id/methodsListFragment"
+        app:launchSingleTop="true" />
+
+    <fragment
+        android:id="@+id/methodsListFragment"
+        android:name="abandonedstudio.app.focuser.ui.focusmethods.methodslist.MethodsListFragment"
+        android:label="MethodsListFragment"
+        tools:layout="@layout/methods_list"/>
 </navigation>
