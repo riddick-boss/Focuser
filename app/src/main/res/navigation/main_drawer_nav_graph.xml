@@ -12,9 +12,9 @@
 
     <fragment
         android:id="@id/FocusMethodsHostFragment"
-        android:name="abandonedstudio.app.focuser.ui.focusmethods.methodslist.MethodsListFragment"
-        android:label="MethodsListFragment"
-        tools:layout="@layout/methods_list"/>
+        android:name="abandonedstudio.app.focuser.ui.focusmethods.host.FocusMethodsHostFragment"
+        android:label="FocusMethodsHost"
+        tools:layout="@layout/focus_methods_host"/>
     <fragment
         android:id="@id/GlobalSettingsFragment"
         android:name="abandonedstudio.app.focuser.ui.gloablsettings.GlobalSettingsFragment"

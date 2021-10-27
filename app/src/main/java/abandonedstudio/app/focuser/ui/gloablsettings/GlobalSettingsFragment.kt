@@ -6,11 +6,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class GlobalSettingsFragment : Fragment() {
 
+    private val viewModel: GlobalSettingsViewModel by viewModels()
     private var _binding: GlobalSettingsBinding? = null
     private val binding get() = _binding!!
 

@@ -1,4 +1,9 @@
 package abandonedstudio.app.focuser.ui.gloablsettings
 
-class GlobalSettingsViewModel {
+import androidx.lifecycle.ViewModel
+import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
+
+@HiltViewModel
+class GlobalSettingsViewModel @Inject constructor() : ViewModel() {
 }
