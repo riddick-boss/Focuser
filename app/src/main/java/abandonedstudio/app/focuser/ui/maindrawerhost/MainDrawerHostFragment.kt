@@ -78,9 +78,11 @@ class MainDrawerHostFragment : Fragment() {
         val drawerNavHostFragment =
             childFragmentManager.findFragmentById(R.id.drawer_nav_host) as NavHostFragment
         val drawerNavController = drawerNavHostFragment.navController
-        val topDestinations = setOf(
-            R.id.FocusMethodsHostFragment
-        )
+        val topDestinations =
+            setOf(
+                R.id.FocusMethodsHostFragment,
+                R.id.GlobalSettingsFragment
+            )
         drawerAppBarConfiguration = AppBarConfiguration(topDestinations, binding.drawerLayout)
         appCompatActivity.setupActionBarWithNavController(
             drawerNavController,
