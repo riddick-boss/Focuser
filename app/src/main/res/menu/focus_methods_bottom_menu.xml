@@ -6,7 +6,7 @@
         android:title="List" />
 
     <item
-        android:id="@+id/newsFragment"
+        android:id="@+id/methodsNewsFragment"
         android:title="News" />
 
 </menu>
