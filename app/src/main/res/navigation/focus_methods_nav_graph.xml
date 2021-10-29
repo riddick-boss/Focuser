@@ -5,8 +5,13 @@
     android:id="@+id/focus_methods_nav_graph"
     app:startDestination="@+id/methodsListFragment">
 
+    <action
+        android:id="@+id/action_global_to_focusMethodsHostFragment"
+        app:destination="@id/methodsListFragment"
+        app:launchSingleTop="true" />
+
     <fragment
-        android:id="@+id/methodsListFragment"
+        android:id="@id/methodsListFragment"
         android:name="abandonedstudio.app.focuser.ui.focusmethods.methodslist.MethodsListFragment"
         android:label="MethodsListFragment"
         tools:layout="@layout/methods_list" />
