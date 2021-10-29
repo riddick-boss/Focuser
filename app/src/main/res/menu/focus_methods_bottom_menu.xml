@@ -5,4 +5,8 @@
         android:id="@+id/methodsListFragment"
         android:title="List" />
 
+    <item
+        android:id="@+id/newsFragment"
+        android:title="News" />
+
 </menu>
