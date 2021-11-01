@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">Focuser</string>
+    <string name="title">Title</string>
+    <string name="check">check</string>
 </resources>
