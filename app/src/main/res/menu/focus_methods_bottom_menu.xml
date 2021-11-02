@@ -2,7 +2,7 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
-        android:id="@+id/methodsListFragment"
+        android:id="@+id/methodsWalkthroughFragment"
         android:title="List" />
 
     <item
