@@ -13,8 +13,8 @@ import javax.inject.Singleton
 @InstallIn(SingletonComponent::class)
 object DataStoreModule {
 
-    @Provides
     @Singleton
+    @Provides
     fun userLocalPreferences(@ApplicationContext appContext: Context): UserLocalPreferences =
         UserLocalPreferences(appContext)
 }
