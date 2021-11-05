@@ -1,9 +1,37 @@
 package abandonedstudio.app.focuser.ui.gloablsettings
 
+import abandonedstudio.app.focuser.util.ThemeMode
+import abandonedstudio.app.focuser.util.Themer
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class GlobalSettingsViewModel @Inject constructor() : ViewModel() {
+class GlobalSettingsViewModel @Inject constructor(private val themer: Themer) : ViewModel() {
+
+    fun setLightTheme(){
+        setTheme(ThemeMode.LIGHT)
+    }
+
+    fun setNightTheme(){
+        setTheme(ThemeMode.NIGHT)
+    }
+
+    fun setAutoTheme(){
+        setTheme(ThemeMode.AUTO)
+    }
+
+    private fun setTheme(themeMode: ThemeMode){
+        viewModelScope.launch {
+            themer.setTheme(themeMode)
+        }
+    }
+
+    fun loadSavedTheme(): Flow<ThemeMode> {
+        return themer.loadTheme()
+    }
+
 }

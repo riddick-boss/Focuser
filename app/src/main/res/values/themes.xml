@@ -25,4 +25,12 @@
 
     <style name="Theme.Focuser.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
+<!--    for Radio Buttons -->
+    <style name="RadioButtonStyle" >
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_margin">5dp</item>
+        <item name="android:layout_weight">1</item>
+    </style>
+
 </resources>
