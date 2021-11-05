@@ -34,8 +34,12 @@ class SplashScreenFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        //    set fullscreen
+
+//        set fullscreen
         requireActivity().window.addFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS)
+
+//        load saved theme
+        viewModel.loadAndSetSavedTheme()
 
         val fadeInAnim = AnimationUtils.loadAnimation(requireContext(), R.anim.fade_in_1_5sec)
 

@@ -1,4 +1,4 @@
-package abandonedstudio.app.focuser.util
+package abandonedstudio.app.focuser.helpers.theming
 
 import abandonedstudio.app.focuser.model.datastore.UserLocalPreferences
 import androidx.appcompat.app.AppCompatDelegate.*
@@ -7,7 +7,7 @@ import javax.inject.Inject
 
 class Themer @Inject constructor(
     private val userLocalPreferences: UserLocalPreferences
-) {
+): Theming {
 
     companion object {
         fun getThemeModeBasedOnString(theme: String?): ThemeMode {
@@ -19,7 +19,7 @@ class Themer @Inject constructor(
         }
     }
 
-    suspend fun setTheme(themeMode: ThemeMode) {
+    override suspend fun setTheme(themeMode: ThemeMode) {
         when (themeMode) {
             ThemeMode.LIGHT -> {
                 setDefaultNightMode(MODE_NIGHT_NO)
@@ -34,11 +34,11 @@ class Themer @Inject constructor(
         saveThemeMode(themeMode)
     }
 
-    private suspend fun saveThemeMode(themeMode: ThemeMode) {
-        userLocalPreferences.saveThemeMode(themeMode)
+    override fun loadTheme(): Flow<ThemeMode> {
+        return userLocalPreferences.savedThemeMode
     }
 
-    fun loadTheme(): Flow<ThemeMode> {
-        return userLocalPreferences.savedThemeMode
+    private suspend fun saveThemeMode(themeMode: ThemeMode) {
+        userLocalPreferences.saveThemeMode(themeMode)
     }
 }

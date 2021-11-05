@@ -9,8 +9,7 @@
         <item name="colorSecondary">@color/teal_200</item>
         <item name="colorSecondaryVariant">@color/teal_700</item>
         <item name="colorOnSecondary">@color/black</item>
-        <!-- Status bar color. -->
-        <!--        <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>-->
+        <!--        VERY IMPORTANT -->
         <item name="android:windowNoTitle">true</item>
         <item name="android:windowActionBar">false</item>
         <!-- Customize your theme here. -->
@@ -25,8 +24,8 @@
 
     <style name="Theme.Focuser.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
-<!--    for Radio Buttons -->
-    <style name="RadioButtonStyle" >
+    <!--    for Radio Buttons -->
+    <style name="RadioButtonStyle">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_margin">5dp</item>

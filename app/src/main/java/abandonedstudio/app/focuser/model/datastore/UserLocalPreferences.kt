@@ -3,8 +3,8 @@ package abandonedstudio.app.focuser.model.datastore
 import abandonedstudio.app.focuser.model.datastore.UserLocalPreferences.PreferenceKeys.THEME_MODE_KEY
 import abandonedstudio.app.focuser.util.Constants.THEME_MODE
 import abandonedstudio.app.focuser.util.Constants.USER_LOCAL_PREFERENCES_DS
-import abandonedstudio.app.focuser.util.ThemeMode
-import abandonedstudio.app.focuser.util.Themer
+import abandonedstudio.app.focuser.helpers.theming.ThemeMode
+import abandonedstudio.app.focuser.helpers.theming.Themer
 import android.content.Context
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.emptyPreferences
