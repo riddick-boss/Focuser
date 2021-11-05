@@ -6,4 +6,8 @@
     <string name="light">Light</string>
     <string name="night">Night</string>
     <string name="auto">Auto</string>
+    <string name="list">List</string>
+    <string name="news">News</string>
+    <string name="focus_methods">Focus Methods</string>
+    <string name="settings">Settings</string>
 </resources>

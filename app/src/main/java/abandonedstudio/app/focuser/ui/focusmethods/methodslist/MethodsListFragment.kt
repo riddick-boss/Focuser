@@ -1,6 +1,5 @@
 package abandonedstudio.app.focuser.ui.focusmethods.methodslist
 
-import abandonedstudio.app.focuser.R
 import abandonedstudio.app.focuser.databinding.MethodsListBinding
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -9,7 +8,6 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.Navigation
-import androidx.navigation.fragment.NavHostFragment
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint

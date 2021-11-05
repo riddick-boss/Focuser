@@ -3,10 +3,10 @@
 
     <item
         android:id="@+id/methodsWalkthroughFragment"
-        android:title="List" />
+        android:title="@string/list" />
 
     <item
         android:id="@+id/methodsNewsFragment"
-        android:title="News" />
+        android:title="@string/news" />
 
 </menu>

@@ -6,10 +6,10 @@
     <group android:checkableBehavior="single">
         <item
             android:id="@+id/FocusMethodsHostFragment"
-            android:title="Focus Methods" />
+            android:title="@string/focus_methods" />
         <item
             android:id="@+id/GlobalSettingsFragment"
-            android:title="Settings" />
+            android:title="@string/settings" />
     </group>
 
 </menu>
