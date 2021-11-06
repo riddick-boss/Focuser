@@ -5,9 +5,12 @@ import abandonedstudio.app.focuser.util.Constants.THEME_MODE
 import abandonedstudio.app.focuser.util.Constants.USER_LOCAL_PREFERENCES_DS
 import abandonedstudio.app.focuser.helpers.theming.ThemeMode
 import abandonedstudio.app.focuser.helpers.theming.Themer
+import abandonedstudio.app.focuser.model.datastore.UserLocalPreferences.PreferenceKeys.FAVOURITE_METHOD_ID_KEY
+import abandonedstudio.app.focuser.util.Constants.FAVOURITE_METHOD
 import android.content.Context
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.emptyPreferences
+import androidx.datastore.preferences.core.intPreferencesKey
 import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
 import dagger.hilt.android.qualifiers.ApplicationContext
@@ -23,19 +26,20 @@ private val Context.dataStore by preferencesDataStore(name = USER_LOCAL_PREFEREN
 @Singleton
 class UserLocalPreferences @Inject constructor(@ApplicationContext appContext: Context) {
 
-    private val settingsDataStore = appContext.dataStore
+    private val dataStore = appContext.dataStore
 
     object PreferenceKeys {
         val THEME_MODE_KEY = stringPreferencesKey(name = THEME_MODE)
+        val FAVOURITE_METHOD_ID_KEY = intPreferencesKey(name = FAVOURITE_METHOD)
     }
 
     suspend fun saveThemeMode(themeMode: ThemeMode) {
-        settingsDataStore.edit {
+        dataStore.edit {
             it[THEME_MODE_KEY] = themeMode.toString()
         }
     }
 
-    val savedThemeMode: Flow<ThemeMode> = settingsDataStore.data.catch {
+    val savedThemeMode: Flow<ThemeMode> = dataStore.data.catch {
         if (it is IOException) {
             emit(emptyPreferences())
         } else {
@@ -44,4 +48,21 @@ class UserLocalPreferences @Inject constructor(@ApplicationContext appContext: C
     }.map {
         Themer.getThemeModeBasedOnString(it[THEME_MODE_KEY])
     }
+
+    suspend fun saveFavouriteMethodId(methodId: Int){
+        dataStore.edit {
+            it[FAVOURITE_METHOD_ID_KEY] = methodId
+        }
+    }
+
+    val savedFavouriteMethodId: Flow<Int?> = dataStore.data.catch {
+        if (it is IOException) {
+            emit(emptyPreferences())
+        } else {
+            throw it
+        }
+    }.map {
+        it[FAVOURITE_METHOD_ID_KEY]
+    }
+
 }

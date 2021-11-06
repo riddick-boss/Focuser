@@ -8,11 +8,6 @@ object Constants {
 
 //    DataStore keys
     const val THEME_MODE = "theme_settings"
-
-//    TODO: create enum
-//    themes
-    const val LIGHT_THEME = "LIGHT_THEME"
-    const val NIGHT_THEME = "NIGHT_THEME"
-    const val AUTO_THEME = "AUTO_THEME"
+    const val FAVOURITE_METHOD = "favourite_method"
 
 }

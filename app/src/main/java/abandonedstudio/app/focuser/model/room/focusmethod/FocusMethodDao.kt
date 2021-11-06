@@ -13,4 +13,11 @@ interface FocusMethodDao {
 
     @Delete
     suspend fun delete(focusMethod: FocusMethod)
+
+    @Query("SELECT * FROM focus_method ORDER BY name")
+    suspend fun getAllMethods(): List<FocusMethod>
+
+    @Query("SELECT * FROM focus_method WHERE method_id != :favouriteMethodId ORDER BY name")
+    suspend fun getAllMethodsWithoutFavourite(favouriteMethodId: Int): List<FocusMethod>
+
 }
