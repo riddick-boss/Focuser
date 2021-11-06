@@ -19,4 +19,13 @@ class FocusMethodRepository @Inject constructor(private val focusMethodDao: Focu
     suspend fun delete(name: String) {
         focusMethodDao.delete(FocusMethod(name))
     }
+
+    suspend fun getAllMethods(): List<FocusMethod> {
+        return focusMethodDao.getAllMethods()
+    }
+
+    suspend fun getAllMethodsWithoutFavourite(favouriteMethodId: Int): List<FocusMethod> {
+        return focusMethodDao.getAllMethodsWithoutFavourite(favouriteMethodId)
+    }
+
 }

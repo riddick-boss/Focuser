@@ -1,6 +1,7 @@
 package abandonedstudio.app.focuser.ui.focusmethods.methodslist
 
 import abandonedstudio.app.focuser.databinding.MethodItemBinding
+import abandonedstudio.app.focuser.model.room.focusmethod.FocusMethod
 import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -8,13 +9,13 @@ import androidx.recyclerview.widget.RecyclerView
 
 class MethodsListRVAdapter : RecyclerView.Adapter<MethodsListRVAdapter.MethodsListRVViewHolder>() {
 
-    private var methodsList = mutableListOf<String>()
+    private var methodsList = listOf<FocusMethod>()
 
     inner class MethodsListRVViewHolder(val binding: MethodItemBinding) :
         RecyclerView.ViewHolder(binding.root)
 
     @SuppressLint("NotifyDataSetChanged")
-    fun submitList(list: MutableList<String>) {
+    fun submitList(list: List<FocusMethod>) {
         if (list.isEmpty()) {
             return
         }
@@ -30,7 +31,7 @@ class MethodsListRVAdapter : RecyclerView.Adapter<MethodsListRVAdapter.MethodsLi
 
     override fun onBindViewHolder(holder: MethodsListRVViewHolder, position: Int) {
         val method = methodsList[holder.absoluteAdapterPosition]
-        holder.binding.methodNameTV.text = method
+        holder.binding.methodNameTV.text = method.name
     }
 
     override fun getItemCount(): Int {

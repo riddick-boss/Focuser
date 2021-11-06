@@ -56,18 +56,18 @@ class MethodsListFragment : Fragment() {
     }
 
     private fun setupListForMethodsRV() {
-        val list = mutableListOf("cs", "vev")
-//        viewModel.getAllMethods()
-        methodsListAdapter.submitList(list)
+        viewLifecycleOwner.lifecycleScope.launch {
+            methodsListAdapter.submitList(viewModel.getMethods(viewModel.getSavedFavouriteMethodId()))
+        }
     }
 
     private fun showFavouriteMethodIfExists() {
         viewLifecycleOwner.lifecycleScope.launch {
-            val method = viewModel.getSavedFavouriteMethodId().first()
+            val method = viewModel.getSavedFavouriteMethodId()
             if (method == null) {
                 binding.favouriteMethodINC.root.visibility = View.GONE
                 binding.dividerV.visibility = View.GONE
-            } else{
+            } else {
 //                here set name of method and action on click
             }
         }
