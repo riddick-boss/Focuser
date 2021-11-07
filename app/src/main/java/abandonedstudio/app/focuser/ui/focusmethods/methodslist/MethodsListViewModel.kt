@@ -6,6 +6,7 @@ import abandonedstudio.app.focuser.model.room.focusmethod.FocusMethodRepository
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -28,16 +29,16 @@ class MethodsListViewModel @Inject constructor(
         }
     }
 
-    suspend fun getSavedFavouriteMethodId(): Int? {
-        return userLocalPreferences.savedFavouriteMethodId.first()
+    fun getSavedFavouriteMethodId(): Flow<Int?> {
+        return userLocalPreferences.savedFavouriteMethodId
     }
 
     private suspend fun getAllMethods(): List<FocusMethod> {
-        return focusMethodRepository.getAllMethods()
+        return focusMethodRepository.getAllMethods().first()
     }
 
     private suspend fun getAllMethodsWithoutFav(favId: Int): List<FocusMethod> {
-        return focusMethodRepository.getAllMethodsWithoutFavourite(favId)
+        return focusMethodRepository.getAllMethodsWithoutFavourite(favId).first()
     }
 
     suspend fun getMethods(favId: Int?): List<FocusMethod> {
@@ -48,8 +49,7 @@ class MethodsListViewModel @Inject constructor(
         }
     }
 
-    suspend fun getFavMethod(): FocusMethod? {
-        val favId = getSavedFavouriteMethodId()
+    suspend fun getFavMethod(favId: Int?): FocusMethod? {
         return if (favId == null) {
             null
         } else {

@@ -1,6 +1,7 @@
 package abandonedstudio.app.focuser.model.room.focusmethod
 
 import androidx.room.*
+import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface FocusMethodDao {
@@ -15,10 +16,10 @@ interface FocusMethodDao {
     suspend fun delete(focusMethod: FocusMethod)
 
     @Query("SELECT * FROM focus_method ORDER BY name")
-    suspend fun getAllMethods(): List<FocusMethod>
+    fun getAllMethods(): Flow<List<FocusMethod>>
 
     @Query("SELECT * FROM focus_method WHERE method_id != :favouriteMethodId ORDER BY name")
-    suspend fun getAllMethodsWithoutFavourite(favouriteMethodId: Int): List<FocusMethod>
+    fun getAllMethodsWithoutFavourite(favouriteMethodId: Int): Flow<List<FocusMethod>>
 
     @Query("SELECT * FROM focus_method WHERE method_id == :favouriteMethodId")
     suspend fun getFavMethod(favouriteMethodId: Int): FocusMethod

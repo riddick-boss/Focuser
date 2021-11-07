@@ -12,6 +12,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
@@ -37,11 +38,16 @@ class MethodsListFragment : Fragment(), MethodsListRVAdapter.OnItemClick {
 
 //        recyclerView
         setupMethodsRV()
-        setupListForMethodsRV()
         methodsListAdapter.setOnItemClickListener(this)
 
-//        favourite method on top of the screen
-        showFavouriteMethodIfExists()
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewModel.getSavedFavouriteMethodId().collect {
+//                favourite method on top of the screen
+                showFavouriteMethodIfExists(it)
+//                show methods is RV (without current favourite)
+                setupListForMethodsRV(it)
+            }
+        }
 
     }
 
@@ -56,15 +62,13 @@ class MethodsListFragment : Fragment(), MethodsListRVAdapter.OnItemClick {
         layoutManager = LinearLayoutManager(requireContext())
     }
 
-    private fun setupListForMethodsRV() {
-        viewLifecycleOwner.lifecycleScope.launch {
-            methodsListAdapter.submitList(viewModel.getMethods(viewModel.getSavedFavouriteMethodId()))
-        }
+    private suspend fun setupListForMethodsRV(favId: Int?) {
+        methodsListAdapter.submitList(viewModel.getMethods(favId))
     }
 
-    private fun showFavouriteMethodIfExists() {
+    private fun showFavouriteMethodIfExists(favId: Int?) {
         viewLifecycleOwner.lifecycleScope.launch {
-            val method = viewModel.getFavMethod()
+            val method = viewModel.getFavMethod(favId)
             if (method == null) {
                 binding.favouriteMethodINC.root.visibility = View.GONE
                 binding.dividerV.visibility = View.GONE

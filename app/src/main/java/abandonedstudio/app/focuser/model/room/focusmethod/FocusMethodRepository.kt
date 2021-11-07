@@ -1,6 +1,7 @@
 package abandonedstudio.app.focuser.model.room.focusmethod
 
 import androidx.annotation.WorkerThread
+import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
 class FocusMethodRepository @Inject constructor(private val focusMethodDao: FocusMethodDao) {
@@ -20,11 +21,11 @@ class FocusMethodRepository @Inject constructor(private val focusMethodDao: Focu
         focusMethodDao.delete(FocusMethod(name))
     }
 
-    suspend fun getAllMethods(): List<FocusMethod> {
+    fun getAllMethods(): Flow<List<FocusMethod>> {
         return focusMethodDao.getAllMethods()
     }
 
-    suspend fun getAllMethodsWithoutFavourite(favouriteMethodId: Int): List<FocusMethod> {
+    fun getAllMethodsWithoutFavourite(favouriteMethodId: Int): Flow<List<FocusMethod>> {
         return focusMethodDao.getAllMethodsWithoutFavourite(favouriteMethodId)
     }
 
