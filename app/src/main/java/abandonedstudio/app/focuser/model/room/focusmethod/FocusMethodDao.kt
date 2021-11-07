@@ -21,7 +21,7 @@ interface FocusMethodDao {
     @Query("SELECT * FROM focus_method WHERE method_id != :favouriteMethodId ORDER BY name")
     fun getAllMethodsWithoutFavourite(favouriteMethodId: Int): Flow<List<FocusMethod>>
 
-    @Query("SELECT * FROM focus_method WHERE method_id == :favouriteMethodId")
-    suspend fun getFavMethod(favouriteMethodId: Int): FocusMethod
+    @Query("SELECT * FROM focus_method WHERE method_id == :methodId")
+    suspend fun getMethod(methodId: Int): FocusMethod
 
 }

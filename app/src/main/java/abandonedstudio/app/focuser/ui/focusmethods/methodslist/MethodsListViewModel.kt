@@ -53,7 +53,7 @@ class MethodsListViewModel @Inject constructor(
         return if (favId == null) {
             null
         } else {
-            focusMethodRepository.getFavMethod(favId)
+            focusMethodRepository.getMethod(favId)
         }
     }
 
