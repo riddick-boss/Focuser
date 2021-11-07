@@ -28,4 +28,8 @@ class FocusMethodRepository @Inject constructor(private val focusMethodDao: Focu
         return focusMethodDao.getAllMethodsWithoutFavourite(favouriteMethodId)
     }
 
+    suspend fun getFavMethod(favouriteMethodId: Int): FocusMethod{
+        return focusMethodDao.getFavMethod(favouriteMethodId)
+    }
+
 }

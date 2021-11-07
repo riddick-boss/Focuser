@@ -22,6 +22,12 @@ class MethodsListViewModel @Inject constructor(
         }
     }
 
+    fun clearFavouriteMethod() {
+        viewModelScope.launch {
+            userLocalPreferences.clearFavouriteMethod()
+        }
+    }
+
     suspend fun getSavedFavouriteMethodId(): Int? {
         return userLocalPreferences.savedFavouriteMethodId.first()
     }
@@ -39,6 +45,15 @@ class MethodsListViewModel @Inject constructor(
             getAllMethods()
         } else {
             getAllMethodsWithoutFav(favId)
+        }
+    }
+
+    suspend fun getFavMethod(): FocusMethod? {
+        val favId = getSavedFavouriteMethodId()
+        return if (favId == null) {
+            null
+        } else {
+            focusMethodRepository.getFavMethod(favId)
         }
     }
 

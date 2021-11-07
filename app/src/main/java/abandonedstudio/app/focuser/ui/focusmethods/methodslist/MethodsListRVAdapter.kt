@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.RecyclerView
 
 class MethodsListRVAdapter : RecyclerView.Adapter<MethodsListRVAdapter.MethodsListRVViewHolder>() {
 
+    private lateinit var listener: OnItemClick
     private var methodsList = listOf<FocusMethod>()
 
     inner class MethodsListRVViewHolder(val binding: MethodItemBinding) :
@@ -32,9 +33,25 @@ class MethodsListRVAdapter : RecyclerView.Adapter<MethodsListRVAdapter.MethodsLi
     override fun onBindViewHolder(holder: MethodsListRVViewHolder, position: Int) {
         val method = methodsList[holder.absoluteAdapterPosition]
         holder.binding.methodNameTV.text = method.name
+        holder.binding.starIB.setOnClickListener {
+            listener.addToFavourite(method)
+        }
+        holder.binding.root.setOnClickListener {
+            listener.openMethod(method)
+        }
     }
 
     override fun getItemCount(): Int {
         return methodsList.size
     }
+
+    interface OnItemClick {
+        fun addToFavourite(method: FocusMethod)
+        fun openMethod(method: FocusMethod)
+    }
+
+    fun setOnItemClickListener(listener: OnItemClick) {
+        this.listener = listener
+    }
+
 }

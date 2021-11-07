@@ -12,6 +12,12 @@
         tools:layout="@layout/methods_walkthrough" />
 
     <fragment
+        android:id="@id/methodsAddMethodFragment"
+        android:name="abandonedstudio.app.focuser.ui.focusmethods.addmethod.AddMethodFragment"
+        android:label="AddMethodFragment"
+        tools:layout="@layout/add_method" />
+
+    <fragment
         android:id="@id/methodsNewsFragment"
         android:name="abandonedstudio.app.focuser.ui.focusmethods.news.MethodsNewsFragment"
         android:label="NewsFragment"

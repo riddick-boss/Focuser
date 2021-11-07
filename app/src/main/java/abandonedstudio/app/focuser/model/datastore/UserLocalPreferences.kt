@@ -1,12 +1,12 @@
 package abandonedstudio.app.focuser.model.datastore
 
-import abandonedstudio.app.focuser.model.datastore.UserLocalPreferences.PreferenceKeys.THEME_MODE_KEY
-import abandonedstudio.app.focuser.util.Constants.THEME_MODE
-import abandonedstudio.app.focuser.util.Constants.USER_LOCAL_PREFERENCES_DS
 import abandonedstudio.app.focuser.helpers.theming.ThemeMode
 import abandonedstudio.app.focuser.helpers.theming.Themer
 import abandonedstudio.app.focuser.model.datastore.UserLocalPreferences.PreferenceKeys.FAVOURITE_METHOD_ID_KEY
+import abandonedstudio.app.focuser.model.datastore.UserLocalPreferences.PreferenceKeys.THEME_MODE_KEY
 import abandonedstudio.app.focuser.util.Constants.FAVOURITE_METHOD
+import abandonedstudio.app.focuser.util.Constants.THEME_MODE
+import abandonedstudio.app.focuser.util.Constants.USER_LOCAL_PREFERENCES_DS
 import android.content.Context
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.emptyPreferences
@@ -49,9 +49,15 @@ class UserLocalPreferences @Inject constructor(@ApplicationContext appContext: C
         Themer.getThemeModeBasedOnString(it[THEME_MODE_KEY])
     }
 
-    suspend fun saveFavouriteMethodId(methodId: Int){
+    suspend fun saveFavouriteMethodId(methodId: Int) {
         dataStore.edit {
             it[FAVOURITE_METHOD_ID_KEY] = methodId
+        }
+    }
+
+    suspend fun clearFavouriteMethod() {
+        dataStore.edit {
+            it.remove(FAVOURITE_METHOD_ID_KEY)
         }
     }
 

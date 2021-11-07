@@ -3,10 +3,17 @@
 
     <item
         android:id="@+id/methodsWalkthroughFragment"
-        android:title="@string/list" />
+        android:title="@string/list"
+        android:icon="@drawable/ic_round_list_24"/>
+
+    <item
+        android:id="@+id/methodsAddMethodFragment"
+        android:title="@string/add"
+        android:icon="@drawable/ic_baseline_add_24"/>
 
     <item
         android:id="@+id/methodsNewsFragment"
-        android:title="@string/news" />
+        android:title="@string/news"
+        android:icon="@drawable/ic_outline_explore_24"/>
 
 </menu>

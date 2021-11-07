@@ -31,7 +31,7 @@ class MethodFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        Toast.makeText(requireContext(), args.toastText, Toast.LENGTH_SHORT).show()
+        Toast.makeText(requireContext(), args.methodId.toString(), Toast.LENGTH_SHORT).show()
     }
 
     override fun onDestroyView() {
