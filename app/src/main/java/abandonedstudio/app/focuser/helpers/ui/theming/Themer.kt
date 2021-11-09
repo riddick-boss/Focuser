@@ -1,4 +1,4 @@
-package abandonedstudio.app.focuser.helpers.theming
+package abandonedstudio.app.focuser.helpers.ui.theming
 
 import abandonedstudio.app.focuser.model.datastore.UserLocalPreferences
 import androidx.appcompat.app.AppCompatDelegate.*

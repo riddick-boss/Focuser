@@ -1,7 +1,7 @@
 package abandonedstudio.app.focuser.model.datastore
 
-import abandonedstudio.app.focuser.helpers.theming.ThemeMode
-import abandonedstudio.app.focuser.helpers.theming.Themer
+import abandonedstudio.app.focuser.helpers.ui.theming.ThemeMode
+import abandonedstudio.app.focuser.helpers.ui.theming.Themer
 import abandonedstudio.app.focuser.model.datastore.UserLocalPreferences.PreferenceKeys.FAVOURITE_METHOD_ID_KEY
 import abandonedstudio.app.focuser.model.datastore.UserLocalPreferences.PreferenceKeys.THEME_MODE_KEY
 import abandonedstudio.app.focuser.util.Constants.FAVOURITE_METHOD

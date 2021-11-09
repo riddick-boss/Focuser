@@ -1,7 +1,7 @@
 package abandonedstudio.app.focuser.ui.gloablsettings
 
 import abandonedstudio.app.focuser.databinding.GlobalSettingsBinding
-import abandonedstudio.app.focuser.helpers.theming.ThemeMode
+import abandonedstudio.app.focuser.helpers.ui.theming.ThemeMode
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View

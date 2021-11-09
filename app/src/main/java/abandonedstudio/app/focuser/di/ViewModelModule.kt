@@ -1,8 +1,8 @@
 package abandonedstudio.app.focuser.di
 
 import abandonedstudio.app.focuser.model.datastore.UserLocalPreferences
-import abandonedstudio.app.focuser.helpers.theming.Themer
-import abandonedstudio.app.focuser.helpers.theming.Theming
+import abandonedstudio.app.focuser.helpers.ui.theming.Themer
+import abandonedstudio.app.focuser.helpers.ui.theming.Theming
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

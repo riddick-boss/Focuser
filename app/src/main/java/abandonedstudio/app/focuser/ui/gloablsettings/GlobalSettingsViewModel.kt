@@ -1,7 +1,7 @@
 package abandonedstudio.app.focuser.ui.gloablsettings
 
-import abandonedstudio.app.focuser.helpers.theming.ThemeMode
-import abandonedstudio.app.focuser.helpers.theming.Theming
+import abandonedstudio.app.focuser.helpers.ui.theming.ThemeMode
+import abandonedstudio.app.focuser.helpers.ui.theming.Theming
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel

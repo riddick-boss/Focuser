@@ -15,4 +15,6 @@
     <string name="name">Name</string>
     <string name="add">Add</string>
     <string name="intervals">Intervals</string>
+    <string name="enter_name_error">Enter method name</string>
+    <string name="intervals_error">Interval cannot be 0</string>
 </resources>

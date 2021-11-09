@@ -7,8 +7,8 @@ import javax.inject.Inject
 class FocusMethodRepository @Inject constructor(private val focusMethodDao: FocusMethodDao) {
 
     @WorkerThread
-    suspend fun insert(name: String) {
-        focusMethodDao.insert(FocusMethod(name))
+    suspend fun insert(focusMethod: FocusMethod) {
+        focusMethodDao.insert(focusMethod)
     }
 
     @WorkerThread
