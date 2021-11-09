@@ -3,7 +3,9 @@ package abandonedstudio.app.focuser.ui.focusmethods.addmethod
 import abandonedstudio.app.focuser.R
 import abandonedstudio.app.focuser.databinding.AddMethodBinding
 import abandonedstudio.app.focuser.helpers.ui.addmethod.ErrorType
+import android.graphics.Color
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -36,21 +38,26 @@ class AddMethodFragment : Fragment() {
 
         viewLifecycleOwner.lifecycleScope.launchWhenStarted {
             viewModel.validationErrorType.collectLatest {
+                Log.d("validation", "coroutine")
                 if (it.isEmpty()) {
+                    Log.d("validation", "cancel")
                     return@collectLatest
                 }
                 if (ErrorType.NONE in it) {
+                    Log.d("validation", "adding")
                     viewModel.addMethod()
                     Toast.makeText(requireContext(), "Method added", Toast.LENGTH_SHORT).show()
                     setDefaultValuesToEditPoles()
                 }
                 if (ErrorType.EMPTY_NAME in it) {
+                    Log.d("validation", "empty name")
                     binding.nameETL.error = getString(R.string.enter_name_error)
                 }
                 if (ErrorType.INTERVAL_ZERO in it) {
+                    Log.d("validation", "interval zero")
                     binding.intervalsTV.apply {
                         text = getString(R.string.intervals_error)
-//                        TODO: set text color to red
+                        setTextColor(Color.parseColor("#FF0000"))
                     }
                 }
             }
@@ -69,6 +76,7 @@ class AddMethodFragment : Fragment() {
         }
 
 //        intervals field
+        binding.intervalsSC.isChecked = true
         binding.intervalsSC.setOnCheckedChangeListener { _, isChecked ->
             toggleFieldVisibilityBasedOnSwitchState(isChecked, binding.intervalsCL)
         }
