@@ -12,13 +12,13 @@ class FocusMethodRepository @Inject constructor(private val focusMethodDao: Focu
     }
 
     @WorkerThread
-    suspend fun update(name: String) {
-        focusMethodDao.update(FocusMethod(name))
+    suspend fun update(focusMethod: FocusMethod) {
+        focusMethodDao.update(focusMethod)
     }
 
     @WorkerThread
-    suspend fun delete(name: String) {
-        focusMethodDao.delete(FocusMethod(name))
+    suspend fun delete(focusMethod: FocusMethod) {
+        focusMethodDao.delete(focusMethod)
     }
 
     fun getAllMethods(): Flow<List<FocusMethod>> {

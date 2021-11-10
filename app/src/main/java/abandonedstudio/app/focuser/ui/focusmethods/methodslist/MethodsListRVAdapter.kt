@@ -39,6 +39,10 @@ class MethodsListRVAdapter : RecyclerView.Adapter<MethodsListRVAdapter.MethodsLi
         holder.binding.root.setOnClickListener {
             listener.openMethod(method)
         }
+        holder.binding.root.setOnLongClickListener {
+            listener.deleteMethod(method)
+            true
+        }
     }
 
     override fun getItemCount(): Int {
@@ -48,6 +52,7 @@ class MethodsListRVAdapter : RecyclerView.Adapter<MethodsListRVAdapter.MethodsLi
     interface OnItemClick {
         fun addToFavourite(method: FocusMethod)
         fun openMethod(method: FocusMethod)
+        fun deleteMethod(method: FocusMethod)
     }
 
     fun setOnItemClickListener(listener: OnItemClick) {

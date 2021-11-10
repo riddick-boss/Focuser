@@ -11,8 +11,10 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
@@ -40,12 +42,21 @@ class MethodsListFragment : Fragment(), MethodsListRVAdapter.OnItemClick {
         setupMethodsRV()
         methodsListAdapter.setOnItemClickListener(this)
 
+//        list of focus methods send to RV
+        viewLifecycleOwner.lifecycleScope.launchWhenStarted {
+            viewModel.methodsList.collectLatest {
+                methodsListAdapter.submitList(it)
+            }
+        }
+
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewModel.updateMethodsList()
+        }
+
         viewLifecycleOwner.lifecycleScope.launch {
             viewModel.getSavedFavouriteMethodId().collect {
 //                favourite method on top of the screen
                 showFavouriteMethodIfExists(it)
-//                show methods is RV (without current favourite)
-                setupListForMethodsRV(it)
             }
         }
 
@@ -60,10 +71,6 @@ class MethodsListFragment : Fragment(), MethodsListRVAdapter.OnItemClick {
         methodsListAdapter = MethodsListRVAdapter()
         adapter = methodsListAdapter
         layoutManager = LinearLayoutManager(requireContext())
-    }
-
-    private suspend fun setupListForMethodsRV(favId: Int?) {
-        methodsListAdapter.submitList(viewModel.getMethods(favId))
     }
 
     private fun showFavouriteMethodIfExists(favId: Int?) {
@@ -103,6 +110,19 @@ class MethodsListFragment : Fragment(), MethodsListRVAdapter.OnItemClick {
 
     override fun openMethod(method: FocusMethod) {
         method.methodId?.let { navToMethodFragment(it) }
+    }
+
+    override fun deleteMethod(method: FocusMethod) {
+        MaterialAlertDialogBuilder(requireContext())
+            .setTitle("Caution")
+            .setMessage("Do you want to delete this method?")
+            .setNeutralButton("No") { dialog, _ ->
+                dialog.dismiss()
+            }
+            .setPositiveButton("OK") { _, _ ->
+                viewModel.deleteMethod(method)
+            }
+            .show()
     }
 
 }
