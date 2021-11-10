@@ -97,6 +97,10 @@ class AddMethodFragment : Fragment() {
         binding.intervalsSC.isChecked = true
         toggleFieldVisibilityBasedOnSwitchState(true, binding.intervalsCL)
         setIntervalsNumPickerMinMax()
+        binding.intervalsTV.apply {
+            text = getString(R.string.intervals)
+            setTextColor(Color.parseColor("#651FFF"))
+        }
     }
 
     private fun toggleFieldVisibilityBasedOnSwitchState(switchChecked: Boolean, fieldView: View) {
