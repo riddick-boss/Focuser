@@ -1,6 +1,7 @@
 package abandonedstudio.app.focuser
 
 import abandonedstudio.app.focuser.databinding.ActivityMainBinding
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import dagger.hilt.android.AndroidEntryPoint
@@ -17,5 +18,10 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+    }
+
+//    TODO: nav to fragment
+    override fun onNewIntent(intent: Intent?) {
+        super.onNewIntent(intent)
     }
 }
