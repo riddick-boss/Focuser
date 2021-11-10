@@ -38,6 +38,9 @@ class MethodsListFragment : Fragment(), MethodsListRVAdapter.OnItemClick {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+//      TODO: check what happens on orientation change
+//       (num pickers probably are set to initial values)
+
 //        recyclerView
         setupMethodsRV()
         methodsListAdapter.setOnItemClickListener(this)

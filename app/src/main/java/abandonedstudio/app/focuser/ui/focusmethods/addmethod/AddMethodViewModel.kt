@@ -18,11 +18,18 @@ class AddMethodViewModel @Inject constructor(
     private val _validationErrorType = MutableStateFlow(mutableListOf<ErrorType>())
     val validationErrorType = _validationErrorType.asStateFlow()
 
+    //    method fields
     //    blank
     var name: String = ""
+    var intervalsState = true
+    var intervalHours = 0
+    var intervalMinutes = 0
+    var intervalRepetitions = 1
 
     suspend fun addMethod() {
-        val focusMethod = FocusMethod(name)
+//        val focusMethod = FocusMethod(name)
+        val focusMethod =
+            FocusMethod(name, intervalsState, intervalHours, intervalMinutes, intervalRepetitions)
         focusMethodRepository.insert(focusMethod)
     }
 
@@ -30,7 +37,8 @@ class AddMethodViewModel @Inject constructor(
         name: String,
         intervalsState: Boolean,
         intervalHours: Int,
-        intervalMinutes: Int
+        intervalMinutes: Int,
+        intervalRepetitions: Int
     ) {
         _validationErrorType.value.clear()
         Log.d("validation", _validationErrorType.value.toString())
@@ -40,9 +48,14 @@ class AddMethodViewModel @Inject constructor(
         } else {
             this.name = name
         }
+        this.intervalsState = intervalsState
         if (intervalsState) {
             if (intervalHours == 0 && intervalMinutes == 0) {
                 errorTypeToReturn.add(ErrorType.INTERVAL_ZERO)
+            } else {
+                this.intervalHours = intervalHours
+                this.intervalMinutes = intervalMinutes
+                this.intervalRepetitions = intervalRepetitions
             }
         }
 

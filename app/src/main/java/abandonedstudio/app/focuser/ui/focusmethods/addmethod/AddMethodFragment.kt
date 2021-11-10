@@ -70,7 +70,8 @@ class AddMethodFragment : Fragment() {
                     name,
                     binding.intervalsSC.isChecked,
                     binding.hoursNP.value,
-                    binding.minutesNP.value
+                    binding.minutesNP.value,
+                    binding.repetitionsNP.value
                 )
             }
         }
@@ -131,6 +132,10 @@ class AddMethodFragment : Fragment() {
         binding.minutesNP.apply {
             minValue = 0
             maxValue = 59
+        }
+        binding.repetitionsNP.apply {
+            minValue = 1
+            maxValue = 99
         }
     }
 

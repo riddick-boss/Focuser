@@ -10,6 +10,18 @@ data class FocusMethod (
     @ColumnInfo(name = "name")
     var name: String,
 
+    @ColumnInfo(name = "interval_state")
+    var intervalState: Boolean,
+
+    @ColumnInfo(name = "interval_hours")
+    var intervalHours: Int,
+
+    @ColumnInfo(name = "interval_minutes")
+    var intervalMinutes: Int,
+
+    @ColumnInfo(name = "interval_repetitions")
+    var intervalRepetitions: Int,
+
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "method_id")
     var methodId: Int? = null

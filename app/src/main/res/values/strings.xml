@@ -17,4 +17,7 @@
     <string name="intervals">Intervals</string>
     <string name="enter_name_error">Enter method name</string>
     <string name="intervals_error">Interval cannot be 0</string>
+    <string name="repeat">Repetitions:</string>
+    <string name="_00">00</string>
+    <string name="repetitions_left">Repetitions left:</string>
 </resources>

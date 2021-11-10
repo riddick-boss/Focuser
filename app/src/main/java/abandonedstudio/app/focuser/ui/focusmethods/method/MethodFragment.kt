@@ -1,7 +1,6 @@
 package abandonedstudio.app.focuser.ui.focusmethods.method
 
 import abandonedstudio.app.focuser.databinding.MethodBinding
-import abandonedstudio.app.focuser.model.room.focusmethod.FocusMethod
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -35,7 +34,8 @@ class MethodFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         viewLifecycleOwner.lifecycleScope.launch {
-            loadMethodUI(viewModel.getMethod(args.methodId))
+            viewModel.loadMethod(args.methodId)
+            loadMethodUI()
         }
 
     }
@@ -45,8 +45,17 @@ class MethodFragment : Fragment() {
         _binding = null
     }
 
-    //    TODO: try to reorganize code, so importing FocusMethod will NOT be needed
-    private fun loadMethodUI(method: FocusMethod) {
-        binding.nameTV.text = method.name
+    private fun loadMethodUI() {
+        binding.nameTV.text = viewModel.name
+        if (viewModel.intervalState) {
+            binding.intervalsCL.visibility = View.VISIBLE
+            binding.intervalHoursTV.text = viewModel.intervalHours.toString()
+            binding.intervalMinutesTV.text = viewModel.intervalMinutes.toString()
+            binding.initervalRepetitionsTV.text = viewModel.intervalRepetitions.toString()
+        } else {
+            binding.intervalsCL.visibility = View.GONE
+        }
     }
+
+//    private fun intervalField()
 }
