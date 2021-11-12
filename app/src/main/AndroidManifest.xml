@@ -23,8 +23,7 @@
             </intent-filter>
         </activity>
 
-        <service android:name=".service.IntervalService"
-            android:foregroundServiceType="dataSync" />
+        <service android:name=".service.IntervalService" />
     </application>
 
 </manifest>

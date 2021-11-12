@@ -1,6 +1,9 @@
 package abandonedstudio.app.focuser.ui.focusmethods.method
 
 import abandonedstudio.app.focuser.databinding.MethodBinding
+import abandonedstudio.app.focuser.helpers.service.IntervalServiceHelper
+import abandonedstudio.app.focuser.service.IntervalService
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -38,6 +41,13 @@ class MethodFragment : Fragment() {
             loadMethodUI()
         }
 
+        binding.startMethodB.setOnClickListener {
+            if (viewModel.intervalState) {
+//                start interval service
+                deliverActionToService(IntervalServiceHelper.ACTION_START_OT_RESUME_SERVICE)
+            }
+        }
+
     }
 
     override fun onDestroyView() {
@@ -58,4 +68,16 @@ class MethodFragment : Fragment() {
     }
 
 //    private fun intervalField()
+
+    //    deliver intent to service -> not starting service every time function is called
+    private fun deliverActionToService(action: String) =
+        Intent(requireContext(), IntervalService::class.java).also {
+            it.action = action
+            it.putExtra(IntervalServiceHelper.FLAG_HOURS, viewModel.intervalHours)
+            it.putExtra(IntervalServiceHelper.FLAG_MINUTES, viewModel.intervalMinutes)
+            it.putExtra(IntervalServiceHelper.FLAG_REPETITIONS, viewModel.intervalRepetitions)
+            it.putExtra(IntervalServiceHelper.FLAG_BREAK_DURATION, viewModel.intervalBreak)
+            requireContext().startService(it)
+        }
+
 }

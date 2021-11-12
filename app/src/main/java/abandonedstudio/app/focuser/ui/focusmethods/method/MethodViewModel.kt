@@ -14,6 +14,7 @@ class MethodViewModel @Inject constructor(private val focusMethodRepository: Foc
     var intervalHours = 0
     var intervalMinutes = 0
     var intervalRepetitions = 1
+    var intervalBreak = 1
 
     suspend fun loadMethod(methodId: Int) {
         val method = focusMethodRepository.getMethod(methodId)
@@ -22,6 +23,7 @@ class MethodViewModel @Inject constructor(private val focusMethodRepository: Foc
         intervalHours = method.intervalHours
         intervalMinutes = method.intervalMinutes
         intervalRepetitions = method.intervalRepetitions
+        intervalBreak = method.intervalBreak
     }
 
 }
