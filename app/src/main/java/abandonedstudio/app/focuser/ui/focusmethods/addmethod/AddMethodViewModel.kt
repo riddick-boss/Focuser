@@ -21,15 +21,22 @@ class AddMethodViewModel @Inject constructor(
     //    method fields
     //    blank
     var name: String = ""
-    var intervalsState = true
+    var intervalsState = true // true -> interval ON, false -> interval OFF
     var intervalHours = 0
     var intervalMinutes = 0
     var intervalRepetitions = 1
+    var intervalBreak = 1 // minute
 
     suspend fun addMethod() {
-//        val focusMethod = FocusMethod(name)
         val focusMethod =
-            FocusMethod(name, intervalsState, intervalHours, intervalMinutes, intervalRepetitions)
+            FocusMethod(
+                name,
+                intervalsState,
+                intervalHours,
+                intervalMinutes,
+                intervalRepetitions,
+                intervalBreak
+            )
         focusMethodRepository.insert(focusMethod)
     }
 
@@ -38,7 +45,8 @@ class AddMethodViewModel @Inject constructor(
         intervalsState: Boolean,
         intervalHours: Int,
         intervalMinutes: Int,
-        intervalRepetitions: Int
+        intervalRepetitions: Int,
+        intervalBreak: Int
     ) {
         _validationErrorType.value.clear()
         Log.d("validation", _validationErrorType.value.toString())
@@ -49,13 +57,19 @@ class AddMethodViewModel @Inject constructor(
             this.name = name
         }
         this.intervalsState = intervalsState
+//        interval fields
         if (intervalsState) {
-            if (intervalHours == 0 && intervalMinutes == 0) {
+            if (intervalHours <= 0 && intervalMinutes <= 0) {
                 errorTypeToReturn.add(ErrorType.INTERVAL_ZERO)
             } else {
                 this.intervalHours = intervalHours
                 this.intervalMinutes = intervalMinutes
                 this.intervalRepetitions = intervalRepetitions
+            }
+            if (intervalBreak <= 0) {
+                errorTypeToReturn.add(ErrorType.INTERVAL_BREAK_ZERO)
+            } else {
+                this.intervalBreak = intervalBreak
             }
         }
 

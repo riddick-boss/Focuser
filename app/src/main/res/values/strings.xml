@@ -20,4 +20,5 @@
     <string name="repeat">Repetitions:</string>
     <string name="_00">00</string>
     <string name="repetitions_left">Repetitions left:</string>
+    <string name="break_word">Break</string>
 </resources>

@@ -22,6 +22,9 @@ data class FocusMethod (
     @ColumnInfo(name = "interval_repetitions")
     var intervalRepetitions: Int,
 
+    @ColumnInfo(name = "interval_break")
+    var intervalBreak: Int,
+
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "method_id")
     var methodId: Int? = null

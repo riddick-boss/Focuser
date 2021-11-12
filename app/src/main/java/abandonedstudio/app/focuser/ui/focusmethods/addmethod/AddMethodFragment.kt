@@ -71,17 +71,19 @@ class AddMethodFragment : Fragment() {
                     binding.intervalsSC.isChecked,
                     binding.hoursNP.value,
                     binding.minutesNP.value,
-                    binding.repetitionsNP.value
+                    binding.repetitionsNP.value,
+                    binding.intervalBreakNP.value
                 )
             }
         }
 
 //        intervals field
-        binding.intervalsSC.isChecked = true
+        binding.intervalsSC.isChecked = viewModel.intervalsState
         binding.intervalsSC.setOnCheckedChangeListener { _, isChecked ->
+            viewModel.intervalsState = isChecked
             toggleFieldVisibilityBasedOnSwitchState(isChecked, binding.intervalsCL)
         }
-        setIntervalsNumPickerMinMax()
+        setIntervalsNumPickers()
 
     }
 
@@ -96,14 +98,16 @@ class AddMethodFragment : Fragment() {
         binding.nameETL.editText?.text?.clear()
 //        intervals field
         binding.intervalsSC.isChecked = true
+        viewModel.intervalsState = true
         toggleFieldVisibilityBasedOnSwitchState(true, binding.intervalsCL)
-        setIntervalsNumPickerMinMax()
+        setIntervalsNumPickers()
         binding.intervalsTV.apply {
             text = getString(R.string.intervals)
             setTextColor(Color.parseColor("#651FFF"))
         }
     }
 
+    //    remember to toggle variable in viewModel also
     private fun toggleFieldVisibilityBasedOnSwitchState(switchChecked: Boolean, fieldView: View) {
         fieldView.apply {
             visibility = if (switchChecked) {
@@ -114,6 +118,7 @@ class AddMethodFragment : Fragment() {
         }
     }
 
+    //    remember to toggle variable in viewModel also
     private fun toggleField(view: View) {
         view.apply {
             visibility = if (visibility == View.VISIBLE) {
@@ -124,18 +129,33 @@ class AddMethodFragment : Fragment() {
         }
     }
 
-    private fun setIntervalsNumPickerMinMax(hoursMin: Int = 0, hoursMax: Int = 24) {
+    private fun setIntervalsNumPickers(
+        hoursMin: Int = 0,
+        hoursMax: Int = 24,
+        repetitionsMin: Int = 1,
+        repetitionsMax: Int = 99,
+        breakMin: Int = 1,
+        breakMax: Int = 600
+    ) {
         binding.hoursNP.apply {
             minValue = hoursMin
             maxValue = hoursMax
+            value = viewModel.intervalHours
         }
         binding.minutesNP.apply {
             minValue = 0
             maxValue = 59
+            value = viewModel.intervalMinutes
         }
         binding.repetitionsNP.apply {
-            minValue = 1
-            maxValue = 99
+            minValue = repetitionsMin
+            maxValue = repetitionsMax
+            value = viewModel.intervalRepetitions
+        }
+        binding.intervalBreakNP.apply {
+            minValue = breakMin
+            maxValue = breakMax
+            value = viewModel.intervalBreak
         }
     }
 
