@@ -23,6 +23,9 @@
             android:name="methodId"
             app:argType="integer" />
     </fragment>
+    <action
+        android:id="@+id/action_global_methodFragment"
+        app:destination="@id/methodFragment" />
 
 
 </navigation>

@@ -2,16 +2,18 @@ package abandonedstudio.app.focuser.service
 
 import abandonedstudio.app.focuser.helpers.service.IntervalServiceHelper
 import android.content.Intent
+import androidx.core.app.NotificationCompat
 import androidx.lifecycle.LifecycleService
 import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class IntervalService : LifecycleService() {
 
-//    @Inject
-//    lateinit var baseNotificationBuilder: NotificationCompat.Builder
+    @Inject
+    lateinit var baseNotificationBuilder: NotificationCompat.Builder
 
-//    private lateinit var updatedNotificationBuilder: NotificationCompat.Builder
+    private lateinit var updatedNotificationBuilder: NotificationCompat.Builder
 
     //    necessary to distinguish service start from resume
     private var wasServiceAlreadyStarted = false
@@ -24,6 +26,9 @@ class IntervalService : LifecycleService() {
 
     override fun onCreate() {
         super.onCreate()
+
+        updatedNotificationBuilder = baseNotificationBuilder
+        initializeValues()
     }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
@@ -49,6 +54,18 @@ class IntervalService : LifecycleService() {
         }
 
         return super.onStartCommand(intent, flags, startId)
+    }
+
+    private fun startForegroundService() {
+
+    }
+
+    private fun initializeValues() {
+        wasServiceAlreadyStarted = false
+        hours = 0
+        minutes = 1
+        repetitions = 1
+        breakDuration = 1
     }
 
 }

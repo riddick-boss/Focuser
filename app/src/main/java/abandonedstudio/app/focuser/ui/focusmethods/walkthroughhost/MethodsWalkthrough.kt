@@ -1,6 +1,5 @@
 package abandonedstudio.app.focuser.ui.focusmethods.walkthroughhost
 
-import abandonedstudio.app.focuser.R
 import abandonedstudio.app.focuser.databinding.MethodsWalkthroughBinding
 import android.os.Bundle
 import android.view.LayoutInflater

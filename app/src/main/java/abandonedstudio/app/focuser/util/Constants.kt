@@ -6,8 +6,10 @@ object Constants {
 
     const val USER_LOCAL_PREFERENCES_DS = "user_local_preferences_ds"
 
-//    DataStore keys
+    //    DataStore keys
     const val THEME_MODE = "theme_settings"
     const val FAVOURITE_METHOD = "favourite_method"
+
+    const val INTERVAL_SERVICE_NOTIFICATION_CHANNEL_ID = "INTERVAL_SERVICE_NOTIFICATION_CHANNEL_ID"
 
 }
