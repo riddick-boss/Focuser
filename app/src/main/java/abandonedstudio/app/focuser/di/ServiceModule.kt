@@ -2,6 +2,8 @@ package abandonedstudio.app.focuser.di
 
 import abandonedstudio.app.focuser.MainActivity
 import abandonedstudio.app.focuser.R
+import abandonedstudio.app.focuser.helpers.service.CountDown
+import abandonedstudio.app.focuser.helpers.service.DownCounter
 import abandonedstudio.app.focuser.helpers.service.IntervalServiceHelper
 import abandonedstudio.app.focuser.util.Constants
 import android.app.PendingIntent
@@ -47,5 +49,9 @@ object ServiceModule {
         .setContentTitle(context.getString(R.string.working))
         .setContentText("00:00")
         .setContentIntent(pendingIntent)
+
+    @ServiceScoped
+    @Provides
+    fun provideCountDown(downCounter: DownCounter): CountDown = downCounter
 
 }

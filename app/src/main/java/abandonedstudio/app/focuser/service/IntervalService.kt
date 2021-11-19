@@ -1,10 +1,14 @@
 package abandonedstudio.app.focuser.service
 
+import abandonedstudio.app.focuser.helpers.service.CountDown
 import abandonedstudio.app.focuser.helpers.service.IntervalServiceHelper
 import android.content.Intent
+import android.util.Log
 import androidx.core.app.NotificationCompat
 import androidx.lifecycle.LifecycleService
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.*
+import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -15,6 +19,9 @@ class IntervalService : LifecycleService() {
 
     private lateinit var updatedNotificationBuilder: NotificationCompat.Builder
 
+    @Inject
+    lateinit var countDown: CountDown
+
     //    necessary to distinguish service start from resume
     private var wasServiceAlreadyStarted = false
 
@@ -23,6 +30,11 @@ class IntervalService : LifecycleService() {
     private var minutes = 1
     private var repetitions = 1
     private var breakDuration = 1 //in minutes
+
+    companion object {
+        val minutesCountDownInterval = MutableSharedFlow<String>()
+//        var hoursCountDownInterval: Int? = null
+    }
 
     override fun onCreate() {
         super.onCreate()
@@ -42,6 +54,8 @@ class IntervalService : LifecycleService() {
                         repetitions = it.getIntExtra(IntervalServiceHelper.FLAG_REPETITIONS, 1)
                         breakDuration = it.getIntExtra(IntervalServiceHelper.FLAG_BREAK_DURATION, 1)
                         wasServiceAlreadyStarted = true
+                        Log.d("timer", "Service action START")
+                        startForegroundService()
                     }
                 }
                 IntervalServiceHelper.ACTION_PAUSE_SERVICE -> {
@@ -57,7 +71,7 @@ class IntervalService : LifecycleService() {
     }
 
     private fun startForegroundService() {
-
+        countDown.start(TimeUnit.HOURS.toMillis(hours.toLong()) + TimeUnit.MINUTES.toMillis(minutes.toLong()))
     }
 
     private fun initializeValues() {
