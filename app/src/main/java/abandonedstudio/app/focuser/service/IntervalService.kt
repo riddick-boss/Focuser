@@ -2,10 +2,14 @@ package abandonedstudio.app.focuser.service
 
 import abandonedstudio.app.focuser.helpers.service.CountDown
 import abandonedstudio.app.focuser.helpers.service.IntervalServiceHelper
+import abandonedstudio.app.focuser.util.Constants
+import android.app.NotificationManager
+import android.content.Context
 import android.content.Intent
 import android.util.Log
 import androidx.core.app.NotificationCompat
 import androidx.lifecycle.LifecycleService
+import androidx.lifecycle.asLiveData
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.*
 import java.util.concurrent.TimeUnit
@@ -72,6 +76,18 @@ class IntervalService : LifecycleService() {
 
     private fun startForegroundService() {
         countDown.start(TimeUnit.HOURS.toMillis(hours.toLong()) + TimeUnit.MINUTES.toMillis(minutes.toLong()))
+
+        val notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+        IntervalServiceHelper.createNotificationChanel(notificationManager)
+
+        startForeground(Constants.INTERVAL_SERVICE_NOTIFICATION_ID, baseNotificationBuilder.build())
+
+        minutesCountDownInterval.asLiveData().observe(this, {
+            Log.d("timer", it)
+            val notification = updatedNotificationBuilder.setContentText(it)
+            notificationManager.notify(Constants.INTERVAL_SERVICE_NOTIFICATION_ID, notification.build())
+
+        })
     }
 
     private fun initializeValues() {
@@ -82,4 +98,5 @@ class IntervalService : LifecycleService() {
         breakDuration = 1
     }
 
+//    private fun endService
 }

@@ -1,5 +1,11 @@
 package abandonedstudio.app.focuser.helpers.service
 
+import abandonedstudio.app.focuser.util.Constants
+import android.app.NotificationChannel
+import android.app.NotificationManager
+import android.app.NotificationManager.IMPORTANCE_LOW
+import android.os.Build
+
 object IntervalServiceHelper {
     const val ACTION_START_OT_RESUME_SERVICE = "START_OT_RESUME_SERVICE"
     const val ACTION_PAUSE_SERVICE = "PAUSE_SERVICE"
@@ -10,4 +16,16 @@ object IntervalServiceHelper {
     const val FLAG_REPETITIONS = "FLAG_REPETITIONS"
     const val FLAG_BREAK_DURATION = "FLAG_BREAK_DURATION"
 
+    fun createNotificationChanel(manager: NotificationManager){
+        val channel = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            NotificationChannel(
+                Constants.INTERVAL_SERVICE_NOTIFICATION_CHANNEL_ID,
+                Constants.INTERVAL_SERVICE_NOTIFICATION_NAME,
+                IMPORTANCE_LOW
+            )
+        } else {
+            TODO("VERSION.SDK_INT < O")
+        }
+        ServiceUtil.createNotificationChannel(channel, manager)
+    }
 }

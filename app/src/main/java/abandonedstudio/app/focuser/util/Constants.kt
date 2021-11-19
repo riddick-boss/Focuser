@@ -11,5 +11,7 @@ object Constants {
     const val FAVOURITE_METHOD = "favourite_method"
 
     const val INTERVAL_SERVICE_NOTIFICATION_CHANNEL_ID = "INTERVAL_SERVICE_NOTIFICATION_CHANNEL_ID"
+    const val INTERVAL_SERVICE_NOTIFICATION_NAME = "Intervals"
+    const val INTERVAL_SERVICE_NOTIFICATION_ID = 1
 
 }
