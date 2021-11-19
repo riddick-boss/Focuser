@@ -62,6 +62,7 @@ class IntervalService : LifecycleService() {
                         startForegroundService()
                     }
                 }
+//                TODO: pause probably won't be needed
                 IntervalServiceHelper.ACTION_PAUSE_SERVICE -> {
 //                    pauseService()
                 }
@@ -77,7 +78,8 @@ class IntervalService : LifecycleService() {
     private fun startForegroundService() {
         countDown.start(TimeUnit.HOURS.toMillis(hours.toLong()) + TimeUnit.MINUTES.toMillis(minutes.toLong()))
 
-        val notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+        val notificationManager =
+            getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
         IntervalServiceHelper.createNotificationChanel(notificationManager)
 
         startForeground(Constants.INTERVAL_SERVICE_NOTIFICATION_ID, baseNotificationBuilder.build())
@@ -85,7 +87,10 @@ class IntervalService : LifecycleService() {
         minutesCountDownInterval.asLiveData().observe(this, {
             Log.d("timer", it)
             val notification = updatedNotificationBuilder.setContentText(it)
-            notificationManager.notify(Constants.INTERVAL_SERVICE_NOTIFICATION_ID, notification.build())
+            notificationManager.notify(
+                Constants.INTERVAL_SERVICE_NOTIFICATION_ID,
+                notification.build()
+            )
 
         })
     }
@@ -98,7 +103,7 @@ class IntervalService : LifecycleService() {
         breakDuration = 1
     }
 
-    private fun endService(){
+    private fun endService() {
         wasServiceAlreadyStarted = false
         initializeValues()
         countDown.finish()

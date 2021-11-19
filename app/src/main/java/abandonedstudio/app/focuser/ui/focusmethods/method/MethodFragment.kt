@@ -10,6 +10,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.asLiveData
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.navArgs
 import dagger.hilt.android.AndroidEntryPoint
@@ -45,8 +46,13 @@ class MethodFragment : Fragment() {
             if (viewModel.intervalState) {
 //                start interval service
                 deliverActionToService(IntervalServiceHelper.ACTION_START_OT_RESUME_SERVICE)
+                toggleIntervalUI()
             }
         }
+
+        IntervalService.minutesCountDownInterval.asLiveData().observe(viewLifecycleOwner, {
+            binding.intervalCountingTV.text = it
+        })
 
     }
 
@@ -79,5 +85,13 @@ class MethodFragment : Fragment() {
             it.putExtra(IntervalServiceHelper.FLAG_BREAK_DURATION, viewModel.intervalBreak)
             requireContext().startService(it)
         }
+
+    private fun toggleIntervalUI(){
+        binding.intervalHoursTV.visibility = View.INVISIBLE
+        binding.intervalIndicatorHTV.visibility = View.INVISIBLE
+        binding.intervalMinutesTV.visibility = View.INVISIBLE
+        binding.intervalIndicatorMinTV.visibility = View.INVISIBLE
+        binding.intervalCountingTV.visibility = View.VISIBLE
+    }
 
 }
