@@ -17,9 +17,9 @@ class DownCounter @Inject constructor() : CountDown {
         timer = object : CountDownTimer(durationInMillis, 1000) {
             override fun onTick(millisUntilFinished: Long) {
                 val msg = "${TimeUnit.MILLISECONDS.toHours(millisUntilFinished)}:${
-                    TimeUnit.MILLISECONDS.toMinutes(millisUntilFinished)%60
-                }:${TimeUnit.MILLISECONDS.toSeconds(millisUntilFinished)%60}"
-                if (lastMsg != msg){
+                    TimeUnit.MILLISECONDS.toMinutes(millisUntilFinished) % 60
+                }:${TimeUnit.MILLISECONDS.toSeconds(millisUntilFinished) % 60}"
+                if (lastMsg != msg) {
                     runBlocking {
                         IntervalService.minutesCountDownInterval.emit(msg)
                     }
@@ -27,7 +27,10 @@ class DownCounter @Inject constructor() : CountDown {
             }
 
             override fun onFinish() {
-                Log.d("timer", "DownCounter2 onFinish")
+                runBlocking {
+                    Log.d("timer", "DownCounter2 onFinish")
+                    IntervalService.intervalFinished.emit(true)
+                }
             }
         }
         timer.start()

@@ -86,7 +86,7 @@ class MethodFragment : Fragment() {
             requireContext().startService(it)
         }
 
-    private fun toggleIntervalUI(){
+    private fun toggleIntervalUI() {
         binding.intervalHoursTV.visibility = View.INVISIBLE
         binding.intervalIndicatorHTV.visibility = View.INVISIBLE
         binding.intervalMinutesTV.visibility = View.INVISIBLE
