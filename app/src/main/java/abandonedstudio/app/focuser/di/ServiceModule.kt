@@ -5,6 +5,7 @@ import abandonedstudio.app.focuser.R
 import abandonedstudio.app.focuser.helpers.service.CountDown
 import abandonedstudio.app.focuser.helpers.service.DownCounter
 import abandonedstudio.app.focuser.helpers.service.IntervalServiceHelper
+import abandonedstudio.app.focuser.service.IntervalService
 import abandonedstudio.app.focuser.util.Constants
 import android.app.PendingIntent
 import android.content.Context
@@ -49,6 +50,18 @@ object ServiceModule {
         .setContentTitle(context.getString(R.string.working))
         .setContentText("00:00")
         .setContentIntent(pendingIntent)
+        .addAction(
+            R.drawable.ic_sharp_pause_24, "Finish", PendingIntent.getService(
+                context, 1, Intent(context, IntervalService::class.java).apply {
+                    action = IntervalServiceHelper.ACTION_END_SERVICE
+                },
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                    PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT
+                } else {
+                    PendingIntent.FLAG_UPDATE_CURRENT
+                }
+            )
+        )
 
     @ServiceScoped
     @Provides

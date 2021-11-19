@@ -66,7 +66,7 @@ class IntervalService : LifecycleService() {
 //                    pauseService()
                 }
                 IntervalServiceHelper.ACTION_END_SERVICE -> {
-//                    endService()
+                    endService()
                 }
             }
         }
@@ -98,5 +98,12 @@ class IntervalService : LifecycleService() {
         breakDuration = 1
     }
 
-//    private fun endService
+    private fun endService(){
+        wasServiceAlreadyStarted = false
+        initializeValues()
+        countDown.finish()
+        stopForeground(true)
+        stopSelf()
+    }
+
 }
