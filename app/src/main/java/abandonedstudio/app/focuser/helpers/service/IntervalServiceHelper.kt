@@ -5,6 +5,8 @@ import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.NotificationManager.IMPORTANCE_LOW
 import android.os.Build
+import java.sql.Time
+import java.util.concurrent.TimeUnit
 
 object IntervalServiceHelper {
     const val ACTION_START_OT_RESUME_SERVICE = "START_OT_RESUME_SERVICE"
@@ -16,7 +18,7 @@ object IntervalServiceHelper {
     const val FLAG_REPETITIONS = "FLAG_REPETITIONS"
     const val FLAG_BREAK_DURATION = "FLAG_BREAK_DURATION"
 
-    fun createNotificationChanel(manager: NotificationManager){
+    fun createNotificationChanel(manager: NotificationManager) {
         val channel = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             NotificationChannel(
                 Constants.INTERVAL_SERVICE_NOTIFICATION_CHANNEL_ID,
@@ -27,5 +29,13 @@ object IntervalServiceHelper {
             TODO("VERSION.SDK_INT < O")
         }
         ServiceUtil.createNotificationChannel(channel, manager)
+    }
+
+    fun remainingTimeMinutesFromMillisText(millis: Long): String {
+        return "${TimeUnit.MILLISECONDS.toHours(millis)}:${TimeUnit.MILLISECONDS.toMinutes(millis) % 60}"
+    }
+
+    fun remainingTimeMinutesFromMillis(millis: Long): Int {
+        return (TimeUnit.MILLISECONDS.toHours(millis) % 24 + TimeUnit.MILLISECONDS.toMinutes(millis) % 60).toInt()
     }
 }

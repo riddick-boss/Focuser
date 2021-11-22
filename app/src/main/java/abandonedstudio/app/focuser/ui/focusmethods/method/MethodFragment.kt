@@ -5,6 +5,7 @@ import abandonedstudio.app.focuser.helpers.service.IntervalServiceHelper
 import abandonedstudio.app.focuser.service.IntervalService
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,6 +16,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.navArgs
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
+import java.lang.Exception
 
 @AndroidEntryPoint
 class MethodFragment : Fragment() {
@@ -50,8 +52,15 @@ class MethodFragment : Fragment() {
             }
         }
 
-        IntervalService.minutesCountDownInterval.asLiveData().observe(viewLifecycleOwner, {
-            binding.intervalCountingTV.text = it
+        IntervalService.millisCountDownInterval.asLiveData().observe(viewLifecycleOwner, {
+            binding.intervalCountingTV.text =
+                IntervalServiceHelper.remainingTimeMinutesFromMillisText(it)
+            try {
+                binding.intervalCountingPB.progress =
+                    IntervalServiceHelper.remainingTimeMinutesFromMillis(it)
+            } catch (e: Exception) {
+                Log.d("timer", e.toString())
+            }
         })
 
     }
@@ -92,6 +101,11 @@ class MethodFragment : Fragment() {
         binding.intervalMinutesTV.visibility = View.INVISIBLE
         binding.intervalIndicatorMinTV.visibility = View.INVISIBLE
         binding.intervalCountingTV.visibility = View.VISIBLE
+        binding.intervalCountingPB.apply {
+            visibility = View.VISIBLE
+            max = viewModel.intervalHours * 60 + viewModel.intervalMinutes
+            progress = max
+        }
     }
 
 }

@@ -7,8 +7,8 @@ import abandonedstudio.app.focuser.util.Constants
 import android.app.NotificationManager
 import android.content.Context
 import android.content.Intent
-import android.provider.Settings.Global.getString
 import android.util.Log
+import android.widget.Toast
 import androidx.core.app.NotificationCompat
 import androidx.lifecycle.LifecycleService
 import androidx.lifecycle.asLiveData
@@ -42,7 +42,7 @@ class IntervalService : LifecycleService() {
     private var breakNow = true
 
     companion object {
-        val minutesCountDownInterval = MutableSharedFlow<String>()
+        val millisCountDownInterval = MutableSharedFlow<Long>()
         val intervalFinished = MutableSharedFlow<Boolean>()
 //        var hoursCountDownInterval: Int? = null
     }
@@ -94,9 +94,9 @@ class IntervalService : LifecycleService() {
         startForeground(Constants.INTERVAL_SERVICE_NOTIFICATION_ID, baseNotificationBuilder.build())
 
 //        for notification
-        minutesCountDownInterval.asLiveData().observe(this, {
-            Log.d("timer", it)
-            val notification = updatedNotificationBuilder.setContentText(it)
+        millisCountDownInterval.asLiveData().observe(this, {
+            Log.d("timer", IntervalServiceHelper.remainingTimeMinutesFromMillisText(it))
+            val notification = updatedNotificationBuilder.setContentText(IntervalServiceHelper.remainingTimeMinutesFromMillisText(it))
             notificationManager.notify(
                 Constants.INTERVAL_SERVICE_NOTIFICATION_ID,
                 notification.build()
@@ -107,6 +107,7 @@ class IntervalService : LifecycleService() {
         intervalFinished.asLiveData().observe(this, {
             if (repetitions - 1 < 0) {
                 endService()
+                Toast.makeText(this, "Intervals finished", Toast.LENGTH_SHORT).show()
             }
             Log.d("timer", "breaksToTake= $breaksToTake")
             Log.d("timer", "repetitionsLeft= $repetitions")
@@ -114,7 +115,7 @@ class IntervalService : LifecycleService() {
                 if (breakNow) {
                     Log.d("timer", "break now")
                     countDown.start(TimeUnit.MINUTES.toMillis(breakDuration.toLong()))
-                    updatedNotificationBuilder.setContentTitle("Break")
+                    updatedNotificationBuilder.setContentTitle(getString(R.string.break_word))
                     breaksToTake -= 1
                 } else {
                     Log.d("timer", "work now")
@@ -123,7 +124,7 @@ class IntervalService : LifecycleService() {
                             minutes.toLong()
                         )
                     )
-                    updatedNotificationBuilder.setContentTitle("Work")
+                    updatedNotificationBuilder.setContentTitle(getString(R.string.work))
                     repetitions -= 1
                 }
                 breakNow=!breakNow

@@ -4,24 +4,21 @@ import abandonedstudio.app.focuser.service.IntervalService
 import android.os.CountDownTimer
 import android.util.Log
 import kotlinx.coroutines.runBlocking
-import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
 class DownCounter @Inject constructor() : CountDown {
 
-    lateinit var timer: CountDownTimer
+    private lateinit var timer: CountDownTimer
 
     private var lastMsg = ""
 
     override fun start(durationInMillis: Long) {
         timer = object : CountDownTimer(durationInMillis, 1000) {
             override fun onTick(millisUntilFinished: Long) {
-                val msg = "${TimeUnit.MILLISECONDS.toHours(millisUntilFinished)}:${
-                    TimeUnit.MILLISECONDS.toMinutes(millisUntilFinished) % 60
-                }:${TimeUnit.MILLISECONDS.toSeconds(millisUntilFinished) % 60}"
+                val msg = IntervalServiceHelper.remainingTimeMinutesFromMillisText(millisUntilFinished)
                 if (lastMsg != msg) {
                     runBlocking {
-                        IntervalService.minutesCountDownInterval.emit(msg)
+                        IntervalService.millisCountDownInterval.emit(millisUntilFinished)
                     }
                 }
             }

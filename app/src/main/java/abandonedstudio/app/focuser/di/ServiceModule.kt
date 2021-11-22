@@ -47,7 +47,7 @@ object ServiceModule {
         .setAutoCancel(false)
         .setOngoing(true)
         .setSmallIcon(R.drawable.ic_twotone_timer_24)
-        .setContentTitle(context.getString(R.string.working))
+        .setContentTitle(context.getString(R.string.work))
         .setContentText("00:00")
         .setContentIntent(pendingIntent)
         .addAction(
