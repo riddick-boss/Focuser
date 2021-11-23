@@ -3,6 +3,7 @@
     package="abandonedstudio.app.focuser">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
 
     <application
         android:name=".di.HiltApplication"
@@ -24,6 +25,10 @@
         </activity>
 
         <service android:name=".service.IntervalService" />
+
+        <receiver
+            android:name=".service.Alarm"
+            android:process=":remote" />
     </application>
 
 </manifest>
