@@ -14,6 +14,7 @@ import androidx.lifecycle.LifecycleService
 import androidx.lifecycle.asLiveData
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.runBlocking
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 import kotlin.math.ceil
@@ -29,22 +30,23 @@ class IntervalService : LifecycleService() {
     @Inject
     lateinit var countDown: CountDown
 
-    //    necessary to distinguish service start from resume
-    private var wasServiceAlreadyStarted = false
-
     //    interval fields
-    private var hours = 0
-    private var minutes = 1
-    private var repetitions = 1
-    private var breakDuration = 1 //in minutes
+    private var _hours = 0
+    private var _minutes = 1
+    private var _repetitions = 1
+    private var _breakDuration = 1 //in minutes
 
-    private var breaksToTake = ceil(repetitions.toDouble() / 2.0)
-    private var breakNow = true
+    private var _breaksToTake = ceil(_repetitions.toDouble() / 2.0)
+    private var _breakNow = true
 
     companion object {
         val millisCountDownInterval = MutableSharedFlow<Long>()
         val intervalFinished = MutableSharedFlow<Boolean>()
-//        var hoursCountDownInterval: Int? = null
+
+        //    necessary to distinguish service start from resume
+        var wasServiceAlreadyStarted = false
+
+        var repetitionsLeft = MutableSharedFlow<Int>()
     }
 
     override fun onCreate() {
@@ -60,13 +62,16 @@ class IntervalService : LifecycleService() {
             when (it.action) {
                 IntervalServiceHelper.ACTION_START_OT_RESUME_SERVICE -> {
                     if (!wasServiceAlreadyStarted) {
-                        hours = it.getIntExtra(IntervalServiceHelper.FLAG_HOURS, 0)
-                        minutes = it.getIntExtra(IntervalServiceHelper.FLAG_MINUTES, 1)
-                        repetitions = it.getIntExtra(IntervalServiceHelper.FLAG_REPETITIONS, 1)
-                        breakDuration = it.getIntExtra(IntervalServiceHelper.FLAG_BREAK_DURATION, 1)
-                        breaksToTake = ceil(repetitions.toDouble() / 2.0)
+                        _hours = it.getIntExtra(IntervalServiceHelper.FLAG_HOURS, 0)
+                        _minutes = it.getIntExtra(IntervalServiceHelper.FLAG_MINUTES, 1)
+                        _repetitions = it.getIntExtra(IntervalServiceHelper.FLAG_REPETITIONS, 1)
+                        _breakDuration = it.getIntExtra(IntervalServiceHelper.FLAG_BREAK_DURATION, 1)
+                        _breaksToTake = ceil(_repetitions.toDouble() / 2.0)
                         wasServiceAlreadyStarted = true
-                        Log.d("timer", "breaksToTake: $breaksToTake")
+                        runBlocking {
+                            repetitionsLeft.emit(_repetitions)
+                        }
+                        Log.d("timer", "breaksToTake: $_breaksToTake")
                         Log.d("timer", "Service action START")
                         startForegroundService()
                     }
@@ -85,7 +90,7 @@ class IntervalService : LifecycleService() {
     }
 
     private fun startForegroundService() {
-        countDown.start(TimeUnit.HOURS.toMillis(hours.toLong()) + TimeUnit.MINUTES.toMillis(minutes.toLong()))
+        countDown.start(TimeUnit.HOURS.toMillis(_hours.toLong()) + TimeUnit.MINUTES.toMillis(_minutes.toLong()))
 
         val notificationManager =
             getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
@@ -96,7 +101,9 @@ class IntervalService : LifecycleService() {
 //        for notification
         millisCountDownInterval.asLiveData().observe(this, {
             Log.d("timer", IntervalServiceHelper.remainingTimeMinutesFromMillisText(it))
-            val notification = updatedNotificationBuilder.setContentText(IntervalServiceHelper.remainingTimeMinutesFromMillisText(it))
+            val notification = updatedNotificationBuilder.setContentText(
+                IntervalServiceHelper.remainingTimeMinutesFromMillisText(it)
+            )
             notificationManager.notify(
                 Constants.INTERVAL_SERVICE_NOTIFICATION_ID,
                 notification.build()
@@ -105,39 +112,42 @@ class IntervalService : LifecycleService() {
 
 //        for starting next interval
         intervalFinished.asLiveData().observe(this, {
-            if (repetitions - 1 < 0) {
+            if (_repetitions - 1 < 0) {
                 endService()
                 Toast.makeText(this, "Intervals finished", Toast.LENGTH_SHORT).show()
             }
-            Log.d("timer", "breaksToTake= $breaksToTake")
-            Log.d("timer", "repetitionsLeft= $repetitions")
-            if (breaksToTake >= 0) {
-                if (breakNow) {
+            Log.d("timer", "breaksToTake= $_breaksToTake")
+            Log.d("timer", "repetitionsLeft= $_repetitions")
+            if (_breaksToTake >= 0) {
+                if (_breakNow) {
                     Log.d("timer", "break now")
-                    countDown.start(TimeUnit.MINUTES.toMillis(breakDuration.toLong()))
+                    countDown.start(TimeUnit.MINUTES.toMillis(_breakDuration.toLong()))
                     updatedNotificationBuilder.setContentTitle(getString(R.string.break_word))
-                    breaksToTake -= 1
+                    _breaksToTake -= 1
                 } else {
                     Log.d("timer", "work now")
                     countDown.start(
-                        TimeUnit.HOURS.toMillis(hours.toLong()) + TimeUnit.MINUTES.toMillis(
-                            minutes.toLong()
+                        TimeUnit.HOURS.toMillis(_hours.toLong()) + TimeUnit.MINUTES.toMillis(
+                            _minutes.toLong()
                         )
                     )
                     updatedNotificationBuilder.setContentTitle(getString(R.string.work))
-                    repetitions -= 1
+                    _repetitions -= 1
                 }
-                breakNow=!breakNow
+                _breakNow = !_breakNow
+                runBlocking {
+                    repetitionsLeft.emit(_repetitions)
+                }
             }
         })
     }
 
     private fun initializeValues() {
         wasServiceAlreadyStarted = false
-        hours = 0
-        minutes = 1
-        repetitions = 1
-        breakDuration = 1
+        _hours = 0
+        _minutes = 1
+        _repetitions = 1
+        _breakDuration = 1
     }
 
     private fun endService() {

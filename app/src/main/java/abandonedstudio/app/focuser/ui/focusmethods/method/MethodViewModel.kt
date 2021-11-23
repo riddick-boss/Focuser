@@ -10,7 +10,7 @@ class MethodViewModel @Inject constructor(private val focusMethodRepository: Foc
     ViewModel() {
 
     var name = ""
-    var intervalState = true
+    var isIntervalInThisMethod = true
     var intervalHours = 0
     var intervalMinutes = 0
     var intervalRepetitions = 1
@@ -19,7 +19,7 @@ class MethodViewModel @Inject constructor(private val focusMethodRepository: Foc
     suspend fun loadMethod(methodId: Int) {
         val method = focusMethodRepository.getMethod(methodId)
         name = method.name
-        intervalState = method.intervalState
+        isIntervalInThisMethod = method.intervalState
         intervalHours = method.intervalHours
         intervalMinutes = method.intervalMinutes
         intervalRepetitions = method.intervalRepetitions

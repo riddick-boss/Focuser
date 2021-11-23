@@ -1,5 +1,6 @@
 package abandonedstudio.app.focuser.ui.focusmethods.method
 
+import abandonedstudio.app.focuser.R
 import abandonedstudio.app.focuser.databinding.MethodBinding
 import abandonedstudio.app.focuser.helpers.service.IntervalServiceHelper
 import abandonedstudio.app.focuser.service.IntervalService
@@ -15,6 +16,7 @@ import androidx.lifecycle.asLiveData
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.navArgs
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import java.lang.Exception
 
@@ -42,13 +44,31 @@ class MethodFragment : Fragment() {
         viewLifecycleOwner.lifecycleScope.launch {
             viewModel.loadMethod(args.methodId)
             loadMethodUI()
+            if (viewModel.isIntervalInThisMethod && IntervalService.wasServiceAlreadyStarted) {
+                toggleIntervalUI()
+                binding.startIntervalsB.text = getString(R.string.finish)
+            }
         }
 
-        binding.startMethodB.setOnClickListener {
-            if (viewModel.intervalState) {
-//                start interval service
-                deliverActionToService(IntervalServiceHelper.ACTION_START_OT_RESUME_SERVICE)
-                toggleIntervalUI()
+        viewLifecycleOwner.lifecycleScope.launchWhenStarted {
+            IntervalService.repetitionsLeft.collect {
+                binding.initervalRepetitionsTV.text = it.toString()
+            }
+        }
+
+        binding.startIntervalsB.setOnClickListener {
+            if (viewModel.isIntervalInThisMethod) {
+                if (IntervalService.wasServiceAlreadyStarted) {
+//                    stop interval service
+                    deliverActionToService(IntervalServiceHelper.ACTION_END_SERVICE)
+                    loadMethodUI()
+                    binding.startIntervalsB.text = getString(R.string.start_intervals)
+                } else {
+//                    start interval service
+                    deliverActionToService(IntervalServiceHelper.ACTION_START_OT_RESUME_SERVICE)
+                    toggleIntervalUI()
+                    binding.startIntervalsB.text = getString(R.string.finish)
+                }
             }
         }
 
@@ -72,11 +92,23 @@ class MethodFragment : Fragment() {
 
     private fun loadMethodUI() {
         binding.nameTV.text = viewModel.name
-        if (viewModel.intervalState) {
+        if (viewModel.isIntervalInThisMethod) {
             binding.intervalsCL.visibility = View.VISIBLE
-            binding.intervalHoursTV.text = viewModel.intervalHours.toString()
-            binding.intervalMinutesTV.text = viewModel.intervalMinutes.toString()
+            binding.intervalHoursTV.apply {
+                text = viewModel.intervalHours.toString()
+                visibility = View.VISIBLE
+            }
+            binding.intervalMinutesTV.apply {
+                text = viewModel.intervalMinutes.toString()
+                visibility = View.VISIBLE
+            }
             binding.initervalRepetitionsTV.text = viewModel.intervalRepetitions.toString()
+            binding.intervalIndicatorHTV.visibility = View.VISIBLE
+            binding.intervalIndicatorMinTV.visibility = View.VISIBLE
+            binding.intervalCountingTV.visibility = View.INVISIBLE
+            binding.intervalCountingPB.apply {
+                visibility = View.INVISIBLE
+            }
         } else {
             binding.intervalsCL.visibility = View.GONE
         }

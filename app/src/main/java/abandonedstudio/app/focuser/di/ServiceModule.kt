@@ -51,7 +51,7 @@ object ServiceModule {
         .setContentText("00:00")
         .setContentIntent(pendingIntent)
         .addAction(
-            R.drawable.ic_sharp_pause_24, "Finish", PendingIntent.getService(
+            R.drawable.ic_sharp_pause_24, context.getString(R.string.finish), PendingIntent.getService(
                 context, 1, Intent(context, IntervalService::class.java).apply {
                     action = IntervalServiceHelper.ACTION_END_SERVICE
                 },
