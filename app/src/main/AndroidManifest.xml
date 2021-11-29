@@ -25,7 +25,7 @@
         </activity>
 
         <service android:name=".service.IntervalService" />
-        <service android:name=".service.alarm.AlarmRingtoneUntilDismiss" />
+<!--        <service android:name=".service.alarm.AlarmRingtoneUntilDismiss" />-->
 
     </application>
 

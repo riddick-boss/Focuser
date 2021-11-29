@@ -14,7 +14,10 @@ import androidx.core.app.NotificationCompat
 import androidx.lifecycle.LifecycleService
 import androidx.lifecycle.asLiveData
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
@@ -32,7 +35,7 @@ class IntervalService : LifecycleService() {
     lateinit var countDown: CountDown
 
     //    TODO: injection
-    private val alarm = AlarmRingtoneUntilDismiss()
+    private lateinit var alarm: AlarmRingtoneUntilDismiss
 
     //    interval fields
     private var _hours = 0
@@ -55,7 +58,7 @@ class IntervalService : LifecycleService() {
 
     override fun onCreate() {
         super.onCreate()
-
+        alarm = AlarmRingtoneUntilDismiss(this)
         updatedNotificationBuilder = baseNotificationBuilder
         initializeValues()
     }
@@ -88,6 +91,10 @@ class IntervalService : LifecycleService() {
                 IntervalServiceHelper.ACTION_END_SERVICE -> {
                     endService()
                 }
+                IntervalServiceHelper.ACTION_DISMISS_ALARM -> {
+                    Log.d("alarm", "interval action dismiss")
+                    alarm.dismissAlarm()
+                }
             }
         }
 
@@ -109,7 +116,7 @@ class IntervalService : LifecycleService() {
 
 //        for notification
         millisCountDownInterval.asLiveData().observe(this, {
-            Log.d("timer", IntervalServiceHelper.remainingTimeMinutesFromMillisText(it))
+            Log.d("timer", IntervalServiceHelper.remainingTimeMinutesFromMillisText(it)+(TimeUnit.MILLISECONDS.toSeconds(it)%60).toString())
             val notification = updatedNotificationBuilder.setContentText(
                 IntervalServiceHelper.remainingTimeMinutesFromMillisText(it)
             )
@@ -134,6 +141,7 @@ class IntervalService : LifecycleService() {
                     countDown.start(TimeUnit.MINUTES.toMillis(_breakDuration.toLong()))
                     updatedNotificationBuilder.setContentTitle(getString(R.string.break_word))
                     _breaksToTake -= 1
+                    Log.d("timer", "break taken")
                 } else {
                     Log.d("timer", "work now")
                     countDown.start(
@@ -145,10 +153,15 @@ class IntervalService : LifecycleService() {
                     _repetitions -= 1
                 }
                 _breakNow = !_breakNow
-                runBlocking {
+                CoroutineScope(Dispatchers.Main).launch {
                     repetitionsLeft.emit(_repetitions)
+                    Log.d("timer", "repetitions emitted")
                 }
+//                runBlocking {
+//                    repetitionsLeft.emit(_repetitions)
+//                }
             }
+            Log.d("timer", "keep going")
         })
     }
 
@@ -161,6 +174,7 @@ class IntervalService : LifecycleService() {
     }
 
     private fun endService() {
+        alarm.dismissAlarm()
         wasServiceAlreadyStarted = false
         initializeValues()
         countDown.finish()
