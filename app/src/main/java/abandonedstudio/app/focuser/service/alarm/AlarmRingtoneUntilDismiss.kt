@@ -14,26 +14,24 @@ import android.media.RingtoneManager
 import android.os.Build
 import android.util.Log
 import androidx.core.app.NotificationCompat
+import javax.inject.Inject
 
-class AlarmRingtoneUntilDismiss constructor(context: Context) : AlarmService {
+class AlarmRingtoneUntilDismiss @Inject constructor(private val context: Context) : Alarm {
+
+    private val notificationRequestCode = 2
 
     private val notificationBuilder =
-        NotificationCompat.Builder(context, Constants.INTERVAL_SERVICE_NOTIFICATION_CHANNEL_ID)
+        NotificationCompat.Builder(context, Constants.ALARM_SERVICE_NOTIFICATION_CHANNEL_ID)
             .setAutoCancel(true)
             .setOngoing(false)
             .setSmallIcon(R.drawable.ic_twotone_timer_24)
             .setContentTitle("Alarm")
-            .setContentText("Tap to dismiss")
-            .setContentIntent(
-                PendingIntent.getActivity(
-                    context, 89, Intent().also {
-                        it.action = IntervalServiceHelper.ACTION_DISMISS_ALARM
-                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                            PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT
-                        } else {
-                            PendingIntent.FLAG_UPDATE_CURRENT
-                        }
-                    }, if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            .addAction(
+                R.drawable.ic_sharp_pause_24, context.getString(R.string.tap_to_dismiss), PendingIntent.getService(
+                    context, notificationRequestCode, Intent(context, IntervalService::class.java).apply {
+                        action = IntervalServiceHelper.ACTION_DISMISS_ALARM
+                    },
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                         PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT
                     } else {
                         PendingIntent.FLAG_UPDATE_CURRENT
@@ -104,5 +102,10 @@ class AlarmRingtoneUntilDismiss constructor(context: Context) : AlarmService {
     override fun dismissAlarm() {
         Log.d("alarm", "Alarm dismissed")
         ringtone.stop()
+        clearNotification()
+    }
+
+    private fun clearNotification(){
+        notificationManager.cancel(notificationRequestCode)
     }
 }

@@ -27,4 +27,5 @@
     <string name="work">Work</string>
     <string name="finish">Finish</string>
     <string name="start_intervals">Start intervals</string>
+    <string name="tap_to_dismiss">Tap to dismiss</string>
 </resources>

@@ -3,6 +3,7 @@ package abandonedstudio.app.focuser.service
 import abandonedstudio.app.focuser.R
 import abandonedstudio.app.focuser.helpers.service.CountDown
 import abandonedstudio.app.focuser.helpers.service.IntervalServiceHelper
+import abandonedstudio.app.focuser.service.alarm.Alarm
 import abandonedstudio.app.focuser.service.alarm.AlarmRingtoneUntilDismiss
 import abandonedstudio.app.focuser.util.Constants
 import android.app.NotificationManager
@@ -34,8 +35,8 @@ class IntervalService : LifecycleService() {
     @Inject
     lateinit var countDown: CountDown
 
-    //    TODO: injection
-    private lateinit var alarm: AlarmRingtoneUntilDismiss
+    @Inject
+    lateinit var alarm: Alarm
 
     //    interval fields
     private var _hours = 0
@@ -58,7 +59,7 @@ class IntervalService : LifecycleService() {
 
     override fun onCreate() {
         super.onCreate()
-        alarm = AlarmRingtoneUntilDismiss(this)
+//        alarm = AlarmRingtoneUntilDismiss(this)
         updatedNotificationBuilder = baseNotificationBuilder
         initializeValues()
     }

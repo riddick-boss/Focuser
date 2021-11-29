@@ -6,6 +6,8 @@ import abandonedstudio.app.focuser.helpers.service.CountDown
 import abandonedstudio.app.focuser.helpers.service.DownCounter
 import abandonedstudio.app.focuser.helpers.service.IntervalServiceHelper
 import abandonedstudio.app.focuser.service.IntervalService
+import abandonedstudio.app.focuser.service.alarm.Alarm
+import abandonedstudio.app.focuser.service.alarm.AlarmRingtoneUntilDismiss
 import abandonedstudio.app.focuser.util.Constants
 import android.app.PendingIntent
 import android.content.Context
@@ -66,5 +68,12 @@ object ServiceModule {
     @ServiceScoped
     @Provides
     fun provideCountDown(downCounter: DownCounter): CountDown = downCounter
+
+    @ServiceScoped
+    @Provides
+    fun provideAlarm(alarm: AlarmRingtoneUntilDismiss): Alarm = alarm
+
+    @Provides
+    fun provideAlarmRingtoneUntilDismiss(@ApplicationContext context: Context) = AlarmRingtoneUntilDismiss(context)
 
 }

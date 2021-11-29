@@ -1,6 +1,6 @@
 package abandonedstudio.app.focuser.service.alarm
 
-interface AlarmService {
+interface Alarm {
 
     fun startAlarm()
 
