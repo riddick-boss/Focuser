@@ -3,6 +3,7 @@ package abandonedstudio.app.focuser.service
 import abandonedstudio.app.focuser.R
 import abandonedstudio.app.focuser.helpers.service.CountDown
 import abandonedstudio.app.focuser.helpers.service.IntervalServiceHelper
+import abandonedstudio.app.focuser.service.alarm.AlarmRingtoneUntilDismiss
 import abandonedstudio.app.focuser.util.Constants
 import android.app.NotificationManager
 import android.content.Context
@@ -29,6 +30,9 @@ class IntervalService : LifecycleService() {
 
     @Inject
     lateinit var countDown: CountDown
+
+    //    TODO: injection
+    private val alarm = AlarmRingtoneUntilDismiss()
 
     //    interval fields
     private var _hours = 0
@@ -65,7 +69,8 @@ class IntervalService : LifecycleService() {
                         _hours = it.getIntExtra(IntervalServiceHelper.FLAG_HOURS, 0)
                         _minutes = it.getIntExtra(IntervalServiceHelper.FLAG_MINUTES, 1)
                         _repetitions = it.getIntExtra(IntervalServiceHelper.FLAG_REPETITIONS, 1)
-                        _breakDuration = it.getIntExtra(IntervalServiceHelper.FLAG_BREAK_DURATION, 1)
+                        _breakDuration =
+                            it.getIntExtra(IntervalServiceHelper.FLAG_BREAK_DURATION, 1)
                         _breaksToTake = ceil(_repetitions.toDouble() / 2.0)
                         wasServiceAlreadyStarted = true
                         runBlocking {
@@ -90,7 +95,11 @@ class IntervalService : LifecycleService() {
     }
 
     private fun startForegroundService() {
-        countDown.start(TimeUnit.HOURS.toMillis(_hours.toLong()) + TimeUnit.MINUTES.toMillis(_minutes.toLong()))
+        countDown.start(
+            TimeUnit.HOURS.toMillis(_hours.toLong()) + TimeUnit.MINUTES.toMillis(
+                _minutes.toLong()
+            )
+        )
 
         val notificationManager =
             getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
@@ -118,6 +127,7 @@ class IntervalService : LifecycleService() {
             }
             Log.d("timer", "breaksToTake= $_breaksToTake")
             Log.d("timer", "repetitionsLeft= $_repetitions")
+            alarm.startAlarm()
             if (_breaksToTake >= 0) {
                 if (_breakNow) {
                     Log.d("timer", "break now")

@@ -25,10 +25,8 @@
         </activity>
 
         <service android:name=".service.IntervalService" />
+        <service android:name=".service.alarm.AlarmRingtoneUntilDismiss" />
 
-        <receiver
-            android:name=".service.Alarm"
-            android:process=":remote" />
     </application>
 
 </manifest>
