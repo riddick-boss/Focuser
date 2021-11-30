@@ -93,12 +93,12 @@ class AddMethodFragment : Fragment() {
     }
 
     private fun setDefaultValuesToEditPoles() {
+        viewModel.setInitialValues()
 //        name edittext
         binding.nameETL.error = null
         binding.nameETL.editText?.text?.clear()
 //        intervals field
         binding.intervalsSC.isChecked = true
-        viewModel.intervalsState = true
         toggleFieldVisibilityBasedOnSwitchState(true, binding.intervalsCL)
         setIntervalsNumPickers()
         binding.intervalsTV.apply {
@@ -114,17 +114,6 @@ class AddMethodFragment : Fragment() {
                 View.VISIBLE
             } else {
                 View.GONE
-            }
-        }
-    }
-
-    //    remember to toggle variable in viewModel also
-    private fun toggleField(view: View) {
-        view.apply {
-            visibility = if (visibility == View.VISIBLE) {
-                View.GONE
-            } else {
-                View.VISIBLE
             }
         }
     }

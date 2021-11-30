@@ -38,6 +38,7 @@ class AddMethodViewModel @Inject constructor(
                 intervalBreak
             )
         focusMethodRepository.insert(focusMethod)
+        setInitialValues()
     }
 
     fun validateData(
@@ -78,6 +79,15 @@ class AddMethodViewModel @Inject constructor(
         }
         _validationErrorType.value = errorTypeToReturn
         Log.d("validation", "after " + _validationErrorType.value.toString())
+    }
+
+    fun setInitialValues(){
+        name = ""
+        intervalsState = true
+        intervalHours = 0
+        intervalMinutes = 0
+        intervalRepetitions = 1
+        intervalBreak = 1
     }
 
 }
