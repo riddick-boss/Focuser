@@ -16,7 +16,7 @@ import android.util.Log
 import androidx.core.app.NotificationCompat
 import javax.inject.Inject
 
-class AlarmRingtoneUntilDismiss @Inject constructor(private val context: Context) : Alarm {
+class AlarmRingtoneUntilDismiss @Inject constructor(context: Context) : Alarm {
 
     private val notificationRequestCode = 2
 
