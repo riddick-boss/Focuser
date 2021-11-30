@@ -3,4 +3,5 @@
     <color name="colorPrimary">@color/codGray</color>
     <color name="colorPrimaryVariant">@color/darkMineShaft</color>
     <color name="colorOnPrimary">@color/amaranth</color>
+    <color name="cardViewStrokeBlackYellow">#FFEE58</color>
 </resources>
